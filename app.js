@@ -1,23 +1,26 @@
 /**
  * HR Ретрит · Школа Елены Витчак
- * Интерактив лендинга, перенос UTM-меток, предзаполнение B2B-счёта и телеметрия событий.
+ * Интерактив лендинга, consent-gated Яндекс.Метрика (152-ФЗ), перенос UTM/yclid и hybrid-обработка заявок B2C/B2B.
  */
 (() => {
   'use strict';
 
-  // Конфигурация метрик (подставить ID счётчика Яндекс.Метрики после получения доступа от помощницы)
   const ANALYTICS_CONFIG = {
-    ymCounterId: null, // например: 98765432
-    webhookEndpoint: '', // опционально: CRM / Bitrix24 / Tilda / Formspree / Telegram Bot webhook
+    ymCounterId: null, // ID счётчика Яндекс.Метрики (указывается после подключения кабинета клиента)
+    webhookEndpoint: '', // Серверный обработчик на домене РФ (например: https://vitchakschool.ru/api/hr-retreat-lead.php)
     whatsappPhone: '79851010777',
+    telegramHandle: 'alvitcha',
     b2bEmail: 'hr.retrit@yandex.ru',
     yookassaUrl: 'https://yookassa.ru/my/i/ai_qNXLO-eTd/l',
+    consentStorageKey: 'vitchak_cookie_consent_v1',
   };
 
-  /** Сбор и сохранение UTM-меток для сквозной аналитики */
+  let metrikaLoaded = false;
+
+  /** Сбор и сохранение UTM/рекламных меток для сквозной аналитики */
   function readUtmParams() {
     const params = new URLSearchParams(window.location.search);
-    const keys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+    const keys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'yclid', 'gclid'];
     const utm = {};
     keys.forEach((key) => {
       const value = params.get(key);
@@ -36,7 +39,24 @@
     }
   }
 
-  /** Отправка целей в Яндекс.Метрику / консоль прототипа */
+  function syncUtmInputs() {
+    const utm = readUtmParams();
+    const map = {
+      utmSource: utm.utm_source || '',
+      utmMedium: utm.utm_medium || '',
+      utmCampaign: utm.utm_campaign || '',
+      utmContent: utm.utm_content || '',
+      utmTerm: utm.utm_term || '',
+      utmYclid: utm.yclid || '',
+      pageUrlField: window.location.href,
+    };
+    Object.entries(map).forEach(([id, val]) => {
+      const el = document.getElementById(id);
+      if (el) el.value = val;
+    });
+  }
+
+  /** Отправка целей в Яндекс.Метрику (только при согласии пользователя и наличии ID) */
   function trackEvent(goalName, meta = {}) {
     const payload = {
       goal: goalName,
@@ -44,16 +64,80 @@
       utm: readUtmParams(),
       ...meta,
     };
-    if (
-      ANALYTICS_CONFIG.ymCounterId &&
-      typeof window.ym === 'function'
-    ) {
+    if (ANALYTICS_CONFIG.ymCounterId && typeof window.ym === 'function') {
       try {
         window.ym(ANALYTICS_CONFIG.ymCounterId, 'reachGoal', goalName, payload);
       } catch (_) {}
     }
     window.VitchakMetrics = window.VitchakMetrics || [];
     window.VitchakMetrics.push(payload);
+  }
+
+  /** Загрузка скрипта Яндекс.Метрики строго после согласия пользователя */
+  function loadMetrikaAfterConsent() {
+    if (metrikaLoaded || !ANALYTICS_CONFIG.ymCounterId) return;
+    metrikaLoaded = true;
+
+    (function (m, e, t, r, i, k, a) {
+      m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments); };
+      m[i].l = 1 * new Date();
+      k = e.createElement(t);
+      a = e.getElementsByTagName(t)[0];
+      k.async = 1;
+      k.src = r;
+      a.parentNode.insertBefore(k, a);
+    })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js', 'ym');
+
+    window.ym(ANALYTICS_CONFIG.ymCounterId, 'init', {
+      clickmap: true,
+      trackLinks: true,
+      accurateTrackBounce: true,
+      webvisor: false,
+    });
+
+    try {
+      window.ym(ANALYTICS_CONFIG.ymCounterId, 'getClientID', (clientId) => {
+        const input = document.getElementById('ymClientId');
+        if (input && clientId) input.value = String(clientId);
+      });
+    } catch (_) {}
+  }
+
+  /** Cookie Consent Banner (152-ФЗ) */
+  function initCookieConsent() {
+    const banner = document.getElementById('cookieBanner');
+    const acceptBtn = document.getElementById('cookieAcceptAll');
+    const necessaryBtn = document.getElementById('cookieNecessaryOnly');
+
+    let saved = null;
+    try {
+      saved = localStorage.getItem(ANALYTICS_CONFIG.consentStorageKey);
+    } catch (_) {}
+
+    if (saved === 'all') {
+      loadMetrikaAfterConsent();
+      return;
+    }
+    if (saved === 'necessary') {
+      return;
+    }
+    if (!banner) return;
+
+    banner.hidden = false;
+
+    const saveChoice = (value) => {
+      try {
+        localStorage.setItem(ANALYTICS_CONFIG.consentStorageKey, value);
+      } catch (_) {}
+      banner.hidden = true;
+      if (value === 'all') {
+        loadMetrikaAfterConsent();
+        trackEvent('cookie_consent_all');
+      }
+    };
+
+    if (acceptBtn) acceptBtn.addEventListener('click', () => saveChoice('all'));
+    if (necessaryBtn) necessaryBtn.addEventListener('click', () => saveChoice('necessary'));
   }
 
   // Трекинг кликов по ключевым CTA и кнопкам оплаты
@@ -65,13 +149,15 @@
     });
   });
 
-  // Мобильное меню
+  // Мобильное меню (aria-expanded + inert sync)
   const burgerBtn = document.getElementById('burgerBtn');
   const mobileNav = document.getElementById('mobileNav');
   if (burgerBtn && mobileNav) {
+    mobileNav.inert = mobileNav.hidden;
     burgerBtn.addEventListener('click', () => {
       const isOpen = mobileNav.classList.toggle('is-open');
       mobileNav.hidden = !isOpen;
+      mobileNav.inert = !isOpen;
       burgerBtn.setAttribute('aria-expanded', String(isOpen));
     });
 
@@ -79,79 +165,213 @@
       link.addEventListener('click', () => {
         mobileNav.classList.remove('is-open');
         mobileNav.hidden = true;
+        mobileNav.inert = true;
         burgerBtn.setAttribute('aria-expanded', 'false');
       });
     });
   }
 
-  // Быстрое предзаполнение формы при запросе счёта для юрлица
+  // Переключатель формата оплаты B2C / B2B
+  const payerRadios = document.querySelectorAll('input[name="payer_type"]');
+  const payerPillB2c = document.getElementById('payerPillB2c');
+  const payerPillB2b = document.getElementById('payerPillB2b');
+  const b2bCompanyField = document.getElementById('b2bCompanyField');
+  const submitLeadBtn = document.getElementById('submitLeadBtn');
+
+  function applyPayerMode(mode) {
+    const isB2b = mode === 'b2b';
+    if (payerPillB2c) payerPillB2c.classList.toggle('is-active', !isB2b);
+    if (payerPillB2b) payerPillB2b.classList.toggle('is-active', isB2b);
+    if (b2bCompanyField) b2bCompanyField.hidden = !isB2b;
+    if (submitLeadBtn) {
+      submitLeadBtn.textContent = isB2b
+        ? 'Запросить счёт на компанию'
+        : 'Зафиксировать место и перейти к оплате';
+    }
+  }
+
+  payerRadios.forEach((radio) => {
+    radio.addEventListener('change', () => {
+      if (radio.checked) applyPayerMode(radio.value);
+    });
+  });
+
+  // Быстрое предзаполнение B2B при клике "Запросить счёт на компанию"
   const prefillB2B = document.getElementById('prefillB2B');
   const leadComment = document.getElementById('leadComment');
   const leadEmail = document.getElementById('leadEmail');
-  if (prefillB2B && leadComment) {
+  const leadCompany = document.getElementById('leadCompany');
+  if (prefillB2B) {
     prefillB2B.addEventListener('click', () => {
-      if (!leadComment.value.trim()) {
+      const b2bRadio = document.querySelector('input[name="payer_type"][value="b2b"]');
+      if (b2bRadio) {
+        b2bRadio.checked = true;
+        applyPayerMode('b2b');
+      }
+      if (leadComment && !leadComment.value.trim()) {
         leadComment.value = 'Прошу выставить счёт для оплаты от юридического лица (59 000 ₽) и прислать закрывающие документы.';
       }
       setTimeout(() => {
-        if (leadEmail) leadEmail.focus();
-      }, 260);
+        if (leadCompany) leadCompany.focus();
+        else if (leadEmail) leadEmail.focus();
+      }, 280);
     });
   }
 
-  // Обработка формы заявки с валидацией 152-ФЗ и прямой передачей в WhatsApp / Email / ЮKassa
+  // Копирование B2B-почты в буфер в 1 клик
+  const copyB2bEmailBtn = document.getElementById('copyB2bEmailBtn');
+  if (copyB2bEmailBtn) {
+    const defaultLabel = copyB2bEmailBtn.textContent;
+    copyB2bEmailBtn.addEventListener('click', async () => {
+      const email = copyB2bEmailBtn.getAttribute('data-copy-email') || ANALYTICS_CONFIG.b2bEmail;
+      const ok = await copyToClipboard(email);
+      if (ok) {
+        copyB2bEmailBtn.textContent = 'почта скопирована ✓';
+        trackEvent('copy_b2b_email');
+        setTimeout(() => {
+          copyB2bEmailBtn.textContent = defaultLabel;
+        }, 2400);
+      }
+    });
+  }
+
+  // Обработка формы заявки: 152-ФЗ (2 обязательных + 1 добровольное согласие) + server/direct fallback
   const form = document.getElementById('retreatForm');
   const feedback = document.getElementById('formFeedback');
   if (form && feedback) {
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      const nameInput = document.getElementById('leadName');
-      const contactInput = document.getElementById('leadContact');
-      const consentCheckbox = document.getElementById('consentPd');
-
-      const name = (nameInput?.value || '').trim();
-      const contact = (contactInput?.value || '').trim();
+      const name = (document.getElementById('leadName')?.value || '').trim();
+      const contact = (document.getElementById('leadContact')?.value || '').trim();
       const email = (leadEmail?.value || '').trim();
+      const company = (leadCompany?.value || '').trim();
       const comment = (leadComment?.value || '').trim();
+      const payerMode = document.querySelector('input[name="payer_type"]:checked')?.value || 'b2c';
+
+      const consentPd = document.getElementById('consentPd');
+      const consentOffer = document.getElementById('consentOffer');
+      const consentPromo = document.getElementById('consentPromo');
 
       if (!name || !contact) {
         showFeedback('Пожалуйста, укажите имя и телефон или Telegram для связи.');
         return;
       }
 
-      if (consentCheckbox && !consentCheckbox.checked) {
-        showFeedback('Необходимо согласие на обработку персональных данных и условия оферты.');
+      if ((consentPd && !consentPd.checked) || (consentOffer && !consentOffer.checked)) {
+        showFeedback('Отметьте оба обязательных согласия: на обработку персональных данных и условия публичной оферты.');
         return;
       }
 
       const utm = readUtmParams();
-      trackEvent('retreat_form_submit', { hasEmail: Boolean(email) });
+      const ymClientId = document.getElementById('ymClientId')?.value || '';
+      const payload = {
+        program: 'HR-ретрит (Поток 1 декабря 2026)',
+        priceRub: 59000,
+        payerType: payerMode,
+        name,
+        contact,
+        email,
+        company,
+        comment,
+        consentPd: Boolean(consentPd?.checked),
+        consentOffer: Boolean(consentOffer?.checked),
+        consentPromo: Boolean(consentPromo?.checked),
+        utm,
+        ymClientId,
+        pageUrl: window.location.href,
+      };
+
+      trackEvent('retreat_form_submit', {
+        payerType: payerMode,
+        hasEmail: Boolean(email),
+        consentPromo: payload.consentPromo,
+      });
 
       const messageLines = [
         'Заявка на HR-ретрит Елены Витчак (поток 1 декабря 2026)',
+        `Формат оплаты: ${payerMode === 'b2b' ? 'Счёт на компанию (B2B)' : 'Личная оплата (ЮKassa / СБП)'}`,
         `Имя: ${name}`,
         `Контакт: ${contact}`,
         email ? `Email: ${email}` : null,
+        company && payerMode === 'b2b' ? `Компания / ИНН: ${company}` : null,
         comment ? `Комментарий: ${comment}` : null,
         Object.keys(utm).length ? `UTM: ${JSON.stringify(utm)}` : null,
       ].filter(Boolean);
 
-      const encodedText = encodeURIComponent(messageLines.join('\n'));
-      const waHref = `https://wa.me/${ANALYTICS_CONFIG.whatsappPhone}?text=${encodedText}`;
+      const textSummary = messageLines.join('\n');
+      const encodedText = encodeURIComponent(textSummary);
+      const tgHref = `https://t.me/${ANALYTICS_CONFIG.telegramHandle}?text=${encodedText}`;
       const mailHref = `mailto:${ANALYTICS_CONFIG.b2bEmail}?subject=${encodeURIComponent('Заявка на HR-ретрит (1 декабря 2026)')}&body=${encodedText}`;
+      const waHref = `https://wa.me/${ANALYTICS_CONFIG.whatsappPhone}?text=${encodedText}`;
 
-      // В рабочей версии здесь выполняется POST-отправка на ANALYTICS_CONFIG.webhookEndpoint / Telegram-бот
+      let serverDelivered = false;
+      if (ANALYTICS_CONFIG.webhookEndpoint) {
+        if (submitLeadBtn) submitLeadBtn.disabled = true;
+        try {
+          const controller = new AbortController();
+          const timer = setTimeout(() => controller.abort(), 5000);
+          const resp = await fetch(ANALYTICS_CONFIG.webhookEndpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+            signal: controller.signal,
+          });
+          clearTimeout(timer);
+          serverDelivered = resp.ok;
+        } catch (_) {
+          serverDelivered = false;
+        } finally {
+          if (submitLeadBtn) submitLeadBtn.disabled = false;
+        }
+      }
+
+      const headerNote = serverDelivered
+        ? `<strong>Заявка для ${escapeHtml(name)} принята и передана команде.</strong><br>Доступны также быстрые действия:`
+        : `<strong>Заявка сформирована для ${escapeHtml(name)}.</strong><br>Нажмите удобный канал для моментальной отправки или переходите к оплате:`;
+
       showFeedbackHtml(`
-        <strong>Заявка сформирована для ${escapeHtml(name)}.</strong><br>
-        Выберите быстрый шаг, чтобы отправить данные в 1 клик или сразу оплатить место:<br>
-        <span style="display:inline-flex;flex-wrap:wrap;gap:10px;margin-top:8px;">
-          <a href="${waHref}" target="_blank" rel="noopener noreferrer" style="font-weight:700;text-decoration:underline;">Отправить в WhatsApp →</a>
-          <a href="${mailHref}" style="font-weight:700;text-decoration:underline;">Запросить счёт по Email →</a>
-          <a href="${ANALYTICS_CONFIG.yookassaUrl}" target="_blank" rel="noopener noreferrer" style="font-weight:700;text-decoration:underline;">Оплатить 59 000 ₽ в ЮKassa →</a>
+        ${headerNote}<br>
+        <span style="display:inline-flex;flex-wrap:wrap;gap:8px 14px;margin-top:8px;">
+          ${payerMode === 'b2c' ? `<a href="${ANALYTICS_CONFIG.yookassaUrl}" target="_blank" rel="noopener noreferrer" style="font-weight:700;text-decoration:underline;">Оплатить 59 000 ₽ в ЮKassa →</a>` : ''}
+          <a href="${tgHref}" target="_blank" rel="noopener noreferrer" style="font-weight:700;text-decoration:underline;">Отправить в Telegram →</a>
+          <a href="${mailHref}" style="font-weight:700;text-decoration:underline;">Отправить по Email (B2B) →</a>
+          <a href="${waHref}" target="_blank" rel="noopener noreferrer" style="font-weight:700;text-decoration:underline;">WhatsApp* →</a>
+          <button type="button" class="copy-email-btn" id="copyLeadBtn">Скопировать текст заявки</button>
         </span>
       `);
+
+      const copyLeadBtn = document.getElementById('copyLeadBtn');
+      if (copyLeadBtn) {
+        copyLeadBtn.addEventListener('click', async () => {
+          const copied = await copyToClipboard(textSummary);
+          if (copied) copyLeadBtn.textContent = 'Текст заявки скопирован ✓';
+        });
+      }
     });
+  }
+
+  async function copyToClipboard(text) {
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+        return true;
+      }
+    } catch (_) {}
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      const ok = document.execCommand('copy');
+      document.body.removeChild(ta);
+      return ok;
+    } catch (_) {
+      return false;
+    }
   }
 
   function showFeedback(text) {
@@ -174,7 +394,7 @@
       .replaceAll('"', '&quot;');
   }
 
-  // Запись визита с UTM-метками при загрузке страницы
-  readUtmParams();
+  syncUtmInputs();
+  initCookieConsent();
   trackEvent('page_view_vitchak_retreat');
 })();
