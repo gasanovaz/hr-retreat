@@ -12,10 +12,26 @@
     telegramHandle: 'alvitcha',
     b2bEmail: 'hr.retrit@yandex.ru',
     yookassaUrl: 'https://yookassa.ru/my/i/ai_qNXLO-eTd/l',
+    streamLabel: 'HR-ретрит · 4-й запуск (14 января – 4 февраля)',
+    earlyPriceRub: 50000,
+    standardPriceRub: 59000,
+    earlyDeadlineLabel: '23 декабря',
     consentStorageKey: 'vitchak_cookie_consent_v1',
   };
 
   let metrikaLoaded = false;
+
+  /** Определяет актуальную цену с учётом дедлайна раннего бронирования (23 декабря 2026) */
+  function getActivePriceRub() {
+    const earlyDeadline = new Date('2026-12-23T23:59:59+03:00');
+    return Date.now() <= earlyDeadline.getTime()
+      ? ANALYTICS_CONFIG.earlyPriceRub
+      : ANALYTICS_CONFIG.standardPriceRub;
+  }
+
+  function formatRub(amount) {
+    return `${String(amount).replace(/\B(?=(\d{3})+(?!\d))/g, ' ')} ₽`;
+  }
 
   /** Сбор и сохранение UTM/рекламных меток для сквозной аналитики */
   function readUtmParams() {
@@ -180,13 +196,14 @@
 
   function applyPayerMode(mode) {
     const isB2b = mode === 'b2b';
+    const activePriceLabel = formatRub(getActivePriceRub());
     if (payerPillB2c) payerPillB2c.classList.toggle('is-active', !isB2b);
     if (payerPillB2b) payerPillB2b.classList.toggle('is-active', isB2b);
     if (b2bCompanyField) b2bCompanyField.hidden = !isB2b;
     if (submitLeadBtn) {
       submitLeadBtn.textContent = isB2b
-        ? 'Запросить счёт на компанию'
-        : 'Зафиксировать место и перейти к оплате';
+        ? `Запросить счёт на компанию (${activePriceLabel})`
+        : `Зафиксировать ${activePriceLabel} и получить ссылку`;
     }
   }
 
@@ -196,11 +213,31 @@
     });
   });
 
-  // Быстрое предзаполнение B2B при клике "Запросить счёт на компанию"
+  // Предзаполнение B2C (раннее бронирование по ссылке ИП) или B2B (счёт на компанию)
+  const prefillB2cPay = document.getElementById('prefillB2cPay');
   const prefillB2B = document.getElementById('prefillB2B');
+  const leadName = document.getElementById('leadName');
   const leadComment = document.getElementById('leadComment');
   const leadEmail = document.getElementById('leadEmail');
   const leadCompany = document.getElementById('leadCompany');
+
+  if (prefillB2cPay) {
+    prefillB2cPay.addEventListener('click', () => {
+      const b2cRadio = document.querySelector('input[name="payer_type"][value="b2c"]');
+      if (b2cRadio) {
+        b2cRadio.checked = true;
+        applyPayerMode('b2c');
+      }
+      const activePriceLabel = formatRub(getActivePriceRub());
+      if (leadComment && !leadComment.value.trim()) {
+        leadComment.value = `Прошу зафиксировать место по цене ${activePriceLabel} (раннее бронирование до ${ANALYTICS_CONFIG.earlyDeadlineLabel}) и направить ссылку на оплату от ИП.`;
+      }
+      setTimeout(() => {
+        if (leadName) leadName.focus();
+      }, 280);
+    });
+  }
+
   if (prefillB2B) {
     prefillB2B.addEventListener('click', () => {
       const b2bRadio = document.querySelector('input[name="payer_type"][value="b2b"]');
@@ -208,8 +245,9 @@
         b2bRadio.checked = true;
         applyPayerMode('b2b');
       }
+      const activePriceLabel = formatRub(getActivePriceRub());
       if (leadComment && !leadComment.value.trim()) {
-        leadComment.value = 'Прошу выставить счёт для оплаты от юридического лица (59 000 ₽) и прислать закрывающие документы.';
+        leadComment.value = `Прошу выставить счёт для оплаты от юридического лица (${activePriceLabel}) и прислать закрывающие документы.`;
       }
       setTimeout(() => {
         if (leadCompany) leadCompany.focus();
@@ -242,7 +280,7 @@
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      const name = (document.getElementById('leadName')?.value || '').trim();
+      const name = (leadName?.value || '').trim();
       const contact = (document.getElementById('leadContact')?.value || '').trim();
       const email = (leadEmail?.value || '').trim();
       const company = (leadCompany?.value || '').trim();
@@ -263,11 +301,13 @@
         return;
       }
 
+      const activePriceRub = getActivePriceRub();
+      const activePriceLabel = formatRub(activePriceRub);
       const utm = readUtmParams();
       const ymClientId = document.getElementById('ymClientId')?.value || '';
       const payload = {
-        program: 'HR-ретрит (Поток 1 декабря 2026)',
-        priceRub: 59000,
+        program: ANALYTICS_CONFIG.streamLabel,
+        priceRub: activePriceRub,
         payerType: payerMode,
         name,
         contact,
@@ -284,13 +324,15 @@
 
       trackEvent('retreat_form_submit', {
         payerType: payerMode,
+        priceRub: activePriceRub,
         hasEmail: Boolean(email),
         consentPromo: payload.consentPromo,
       });
 
       const messageLines = [
-        'Заявка на HR-ретрит Елены Витчак (поток 1 декабря 2026)',
-        `Формат оплаты: ${payerMode === 'b2b' ? 'Счёт на компанию (B2B)' : 'Личная оплата (ЮKassa / СБП)'}`,
+        `Заявка на ${ANALYTICS_CONFIG.streamLabel}`,
+        `Стоимость по заявке: ${activePriceLabel} (раннее бронирование до ${ANALYTICS_CONFIG.earlyDeadlineLabel})`,
+        `Формат оплаты: ${payerMode === 'b2b' ? 'Счёт на компанию (B2B)' : 'Личная оплата (ссылка на счёт ИП)'}`,
         `Имя: ${name}`,
         `Контакт: ${contact}`,
         email ? `Email: ${email}` : null,
@@ -302,7 +344,7 @@
       const textSummary = messageLines.join('\n');
       const encodedText = encodeURIComponent(textSummary);
       const tgHref = `https://t.me/${ANALYTICS_CONFIG.telegramHandle}?text=${encodedText}`;
-      const mailHref = `mailto:${ANALYTICS_CONFIG.b2bEmail}?subject=${encodeURIComponent('Заявка на HR-ретрит (1 декабря 2026)')}&body=${encodedText}`;
+      const mailHref = `mailto:${ANALYTICS_CONFIG.b2bEmail}?subject=${encodeURIComponent('Заявка на HR-ретрит (14 января – 4 февраля)')}&body=${encodedText}`;
       const waHref = `https://wa.me/${ANALYTICS_CONFIG.whatsappPhone}?text=${encodedText}`;
 
       let serverDelivered = false;
@@ -327,16 +369,16 @@
       }
 
       const headerNote = serverDelivered
-        ? `<strong>Заявка для ${escapeHtml(name)} принята и передана команде.</strong><br>Доступны также быстрые действия:`
-        : `<strong>Заявка сформирована для ${escapeHtml(name)}.</strong><br>Нажмите удобный канал для моментальной отправки или переходите к оплате:`;
+        ? `<strong>Заявка для ${escapeHtml(name)} принята (цена ${activePriceLabel}).</strong><br>Доступны также быстрые действия:`
+        : `<strong>Заявка сформирована для ${escapeHtml(name)} (цена ${activePriceLabel}).</strong><br>Отправьте заявку в удобный мессенджер — бухгалтер направит прямую ссылку на оплату от ИП или счёт B2B:`;
 
       showFeedbackHtml(`
         ${headerNote}<br>
         <span style="display:inline-flex;flex-wrap:wrap;gap:8px 14px;margin-top:8px;">
-          ${payerMode === 'b2c' ? `<a href="${ANALYTICS_CONFIG.yookassaUrl}" target="_blank" rel="noopener noreferrer" style="font-weight:700;text-decoration:underline;">Оплатить 59 000 ₽ в ЮKassa →</a>` : ''}
-          <a href="${tgHref}" target="_blank" rel="noopener noreferrer" style="font-weight:700;text-decoration:underline;">Отправить в Telegram →</a>
-          <a href="${mailHref}" style="font-weight:700;text-decoration:underline;">Отправить по Email (B2B) →</a>
+          <a href="${tgHref}" target="_blank" rel="noopener noreferrer" style="font-weight:700;text-decoration:underline;">Получить ссылку в Telegram →</a>
+          <a href="${mailHref}" style="font-weight:700;text-decoration:underline;">Отправить на Email →</a>
           <a href="${waHref}" target="_blank" rel="noopener noreferrer" style="font-weight:700;text-decoration:underline;">WhatsApp* →</a>
+          ${payerMode === 'b2c' ? `<a href="${ANALYTICS_CONFIG.yookassaUrl}" target="_blank" rel="noopener noreferrer" style="font-weight:600;text-decoration:underline;">Полный тариф 59 000 ₽ в ЮKassa →</a>` : ''}
           <button type="button" class="copy-email-btn" id="copyLeadBtn">Скопировать текст заявки</button>
         </span>
       `);
@@ -397,22 +439,22 @@
   /** Переключатель 3 вариантов оформления (цвет + шрифтовая пара) */
   function initThemeSwitcher() {
     const THEME_META = {
-      skolkovo: '#144E46',
+      emerald: '#144E46',
       editorial: '#622230',
       graphite: '#1D3557',
     };
-    const ALIAS = { '1': 'skolkovo', '2': 'editorial', '3': 'graphite' };
+    const ALIAS = { '1': 'emerald', skolkovo: 'emerald', '2': 'editorial', '3': 'graphite' };
     const buttons = document.querySelectorAll('[data-theme-choice]');
     const themeColorMeta = document.querySelector('meta[name="theme-color"]');
 
     const normalize = (val) => {
       const key = ALIAS[val] || val;
-      return THEME_META[key] ? key : 'skolkovo';
+      return THEME_META[key] ? key : 'emerald';
     };
 
     const applyTheme = (rawTheme, updateUrl) => {
       const theme = normalize(rawTheme);
-      if (theme === 'skolkovo') {
+      if (theme === 'emerald') {
         document.documentElement.removeAttribute('data-theme');
       } else {
         document.documentElement.dataset.theme = theme;
@@ -435,11 +477,11 @@
     };
 
     const initialParam = new URLSearchParams(window.location.search).get('theme');
-    applyTheme(initialParam || document.documentElement.dataset.theme || 'skolkovo', false);
+    applyTheme(initialParam || document.documentElement.dataset.theme || 'emerald', false);
 
     buttons.forEach((btn) => {
       btn.addEventListener('click', () => {
-        const chosen = btn.getAttribute('data-theme-choice') || 'skolkovo';
+        const chosen = btn.getAttribute('data-theme-choice') || 'emerald';
         applyTheme(chosen, true);
         trackEvent('theme_switch', { theme: chosen });
       });
@@ -447,6 +489,7 @@
   }
 
   initThemeSwitcher();
+  applyPayerMode('b2c');
   syncUtmInputs();
   initCookieConsent();
   trackEvent('page_view_vitchak_retreat');
