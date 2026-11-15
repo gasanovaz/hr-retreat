@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Концепт 1 · Telegram Mini App «Чистая голова · 21 день» — Елена Витчак</title>
+  <meta name="description" content="Интерактивный прототип Telegram-бота и Mini App для курса Елены Витчак: 21 день по 20 минут, аудиопрактики, ДЗ и 3 тарифа с автооплатой.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23151e30'/%3E%3Ccircle cx='32' cy='32' r='13' fill='%23ecd09b'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css?v=1">
+</head>
+<body>
+  <div class="demo-bar">
+    <div class="wrap demo-bar-inner">
+      <div class="demo-badge">
+        <span class="demo-dot" aria-hidden="true"></span>
+        <span>Демо-концепт от студии gasanov.az · Тема «Индиго» под ваш Telegram-бот</span>
+      </div>
+      <nav class="demo-switcher" aria-label="Навигация по концептам">
+        <a class="demo-pill" href="../">← Лендинг HR-ретрита</a>
+        <a class="demo-pill is-active" href="./" aria-current="page">1. Telegram-бот «Чистая голова»</a>
+        <a class="demo-pill" href="../studio/">2. Флагман Школы · Люди + ИИ</a>
+      </nav>
+    </div>
+  </div>
+
+  <main>
+    <section class="hero-bot">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow">
+            <span class="eyebrow-dot" aria-hidden="true"></span>
+            <span>ПАССИВНЫЙ ПРОДУКТ №2 · TELEGRAM MINI APP · 21 ДЕНЬ</span>
+          </div>
+          <h1>«Чистая голова»: ресурсное состояние за&nbsp;20 минут в&nbsp;день</h1>
+          <p class="hero-lead">
+            Интерактивный прототип курса прямо внутри Telegram в той самой синей палитре <b>Индиго + тёплый шампань</b>. Участница открывает урок одним касанием, слушает практику по дороге, отмечает задания и продлевает тариф без вашего ежедневного включения.
+          </p>
+
+          <div class="kpi-row">
+            <div class="kpi-card">
+              <b>21 урок</b>
+              <span>по 15–20 минут в удобном ритме с напоминаниями</span>
+            </div>
+            <div class="kpi-card">
+              <b>3 тарифа</b>
+              <span>1 900 ₽ · 4 900 ₽ · 9 900 ₽ с оплатой внутри Telegram</span>
+            </div>
+            <div class="kpi-card">
+              <b>100% автопилот</b>
+              <span>бот сам выдаёт контент и проверяет оплату</span>
+            </div>
+          </div>
+
+          <div class="econ-card" aria-label="Расчёт экономики потока">
+            <div class="econ-head">
+              <div>
+                <div class="econ-kicker">ЭКОНОМИКА ПОТОКА ДЛЯ ЕЛЕНЫ</div>
+                <h3>Сколько приносит бот при подключении рекламы и канала @hr_expert</h3>
+              </div>
+              <div class="econ-segment" role="group" aria-label="Размер аудитории потока">
+                <button type="button" class="seg-btn" data-users="150">150 чел.</button>
+                <button type="button" class="seg-btn is-active" data-users="300">300 чел.</button>
+                <button type="button" class="seg-btn" data-users="600">600 чел.</button>
+              </div>
+            </div>
+            <div class="econ-metrics">
+              <div class="econ-stat">
+                <span>Средний чек (при распределении тарифов)</span>
+                <b id="econAvg">4 900 ₽</b>
+              </div>
+              <div class="econ-stat is-accent">
+                <span>Потенциальная выручка потока</span>
+                <b id="econTotal">1 470 000 ₽</b>
+              </div>
+            </div>
+            <p class="econ-note">
+              Расчёт ориентировочный при среднем чеке 4 900 ₽: трафик идёт с @hr_expert, посевов и Telegram Ads, а бот полностью берёт на себя онбординг, приём оплат (54-ФЗ) и рассылку 21 урока.
+            </p>
+          </div>
+        </div>
+
+        <div class="phone-stage">
+          <div class="phone-halo" aria-hidden="true"></div>
+          <div class="phone-frame" role="region" aria-label="Интерактивный макет Telegram Mini App">
+            <div class="phone-notch" aria-hidden="true"></div>
+            <div class="tg-topbar">
+              <button type="button" class="tg-back" id="tgResetBtn" title="Сбросить демо">Назад</button>
+              <div class="tg-title-wrap">
+                <b>Чистая голова</b>
+                <span>бот-курс Елены Витчак</span>
+              </div>
+              <img class="tg-avatar" src="../assets/elena-author-clean.webp" alt="Елена Витчак" width="34" height="34">
+            </div>
+
+            <div class="tg-screen">
+              <!-- Panel 1: Today Lesson -->
+              <div class="tg-panel is-active" data-panel="today">
+                <div class="day-pills" role="tablist" aria-label="Дни курса">
+                  <button type="button" class="day-pill is-active" data-day="1">День 01</button>
+                  <button type="button" class="day-pill" data-day="7">День 07</button>
+                  <button type="button" class="day-pill" data-day="14">День 14</button>
+                  <button type="button" class="day-pill" data-day="21">День 21</button>
+                </div>
+
+                <div class="progress-box">
+                  <div class="progress-meta">
+                    <span id="courseStepLabel">Модуль 1 · Разгрузка ума</span>
+                    <b id="progressPercent">14% пройдено</b>
+                  </div>
+                  <div class="progress-track">
+                    <div class="progress-fill" id="progressFill" style="width: 14%;"></div>
+                  </div>
+                </div>
+
+                <div class="lesson-card">
+                  <div class="lesson-tag" id="lessonTag">УРОК 01 ИЗ 21 · 18 МИНУТ</div>
+                  <h2 id="lessonTitle">Стоп-кран от тревожного шума</h2>
+                  <p id="lessonSummary">Короткая практика возврата из круговорота чужих срочных задач в ясное присутствие за 15 минут.</p>
+
+                  <div class="audio-box">
+                    <button type="button" class="play-btn" id="audioPlayBtn" aria-label="Запустить демо-плеер">
+                      <span id="playIcon">▶</span>
+                    </button>
+                    <div class="audio-meta">
+                      <div class="audio-top">
+                        <span>Аудиопрактика дня</span>
+                        <span id="audioTimer" style="white-space:nowrap;">00:00 / 18:05</span>
+                      </div>
+                      <div class="wave-bars" id="waveBars" aria-hidden="true">
+                        <span></span><span></span><span></span><span></span><span></span><span></span>
+                        <span></span><span></span><span></span><span></span><span></span><span></span>
+                        <span></span><span></span><span></span><span></span><span></span><span></span>
+                      </div>
+                    </div>
+                    <button type="button" class="speed-btn" id="speedBtn" title="Скорость воспроизведения">1.0×</button>
+                  </div>
+                </div>
+
+                <div class="hw-card">
+                  <div class="hw-head">
+                    <b>Практика дня (отметьте выполнение)</b>
+                    <span id="hwCount">1 / 2</span>
+                  </div>
+                  <label class="hw-item">
+                    <input type="checkbox" class="hw-check" checked>
+                    <span id="hwText1">Прослушать практику без телефона и мессенджеров</span>
+                  </label>
+                  <label class="hw-item">
+                    <input type="checkbox" class="hw-check">
+                    <span id="hwText2">Записать 3 лишних раздражителя, которые можно отменить сегодня</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Panel 2: 21 Days Roadmap -->
+              <div class="tg-panel" data-panel="map" hidden>
+                <div class="roadmap-head">
+                  <h3>Структура 21 дня</h3>
+                  <p>Три недели мягкого перехода от истощения к устойчивому ясному ритму.</p>
+                </div>
+                <div class="week-list">
+                  <div class="week-card is-open">
+                    <div class="week-title">
+                      <b>Неделя 1 · Тишина в голове</b>
+                      <span>Дни 1–7</span>
+                    </div>
+                    <p>Снятие фоновой тревоги, дыхательные якоря перед сложными разговорами, цифровой детокс перед сном.</p>
+                  </div>
+                  <div class="week-card">
+                    <div class="week-title">
+                      <b>Неделя 2 · Границы и опора</b>
+                      <span>Дни 8–14</span>
+                    </div>
+                    <p>Отказ от чужой срочности без чувства вины, распределение энергии в течение недели, возврат внимания себе.</p>
+                  </div>
+                  <div class="week-card">
+                    <div class="week-title">
+                      <b>Неделя 3 · Ясный вектор</b>
+                      <span>Дни 15–21</span>
+                    </div>
+                    <p>Личный анти-стресс протокол, быстрая перезагрузка за 7 минут, привычки поддержания спокойного тонуса.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Panel 3: Pricing Tiers inside Bot -->
+              <div class="tg-panel" data-panel="tiers" hidden>
+                <div class="roadmap-head">
+                  <h3>Выберите формат участия</h3>
+                  <p>Доступ открывается в боте сразу после оплаты по карте или СБП.</p>
+                </div>
+                <div class="tier-stack">
+                  <button type="button" class="tier-card" data-tier="Базовый · 1 900 ₽">
+                    <div class="tier-row">
+                      <b>Базовый доступ</b>
+                      <span class="tier-price">1 900 ₽</span>
+                    </div>
+                    <p>21 аудио- и видеоурок в боте, рабочие тетради и доступ к материалам на 60 дней.</p>
+                  </button>
+                  <button type="button" class="tier-card is-featured" data-tier="Практикум + чат · 4 900 ₽">
+                    <div class="tier-row">
+                      <b>Практикум + закрытый чат</b>
+                      <span class="tier-price">4 900 ₽</span>
+                    </div>
+                    <p>Все уроки + чек-листы привычек, еженедельные голосовые заметки и поддерживающий чат участниц.</p>
+                  </button>
+                  <button type="button" class="tier-card" data-tier="VIP с разбором · 9 900 ₽">
+                    <div class="tier-row">
+                      <b>VIP · персональный фокус</b>
+                      <span class="tier-price">9 900 ₽</span>
+                    </div>
+                    <p>Полный курс + 1 личный аудиоразбор запроса от команды/куратора и годовой доступ к базе практик.</p>
+                  </button>
+                </div>
+                <div class="tier-toast" id="tierToast" role="status" aria-live="polite">Нажмите на тариф, чтобы увидеть сценарий оплаты в Telegram</div>
+              </div>
+            </div>
+
+            <div class="tg-bottom-nav" role="tablist" aria-label="Разделы мини-приложения">
+              <button type="button" class="tg-tab is-active" data-target="today">Сегодня</button>
+              <button type="button" class="tg-tab" data-target="map">21 день</button>
+              <button type="button" class="tg-tab" data-target="tiers">Тарифы</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec-arch">
+      <div class="wrap">
+        <div class="sec-head">
+          <div>
+            <div class="eyebrow-sm">КАК УСТРОЕН ПРОЕКТ ПОД КЛЮЧ</div>
+            <h2>4 модуля, чтобы бот продавал и обучал без вашего участия</h2>
+          </div>
+          <p class="sec-sub">Готовая архитектура для запуска курса по психологии и ресурсному состоянию — от первого клика в канале @hr_expert до чека и отчётов.</p>
+        </div>
+
+        <div class="arch-grid">
+          <article class="arch-card">
+            <span class="arch-num">01</span>
+            <h3>Вход и мини-тест прогрева</h3>
+            <p>Бесплатный 3-минутный чекап уровня перегрузки сразу в Telegram выдаёт персональный итог и мягко предлагает Старт дня 01.</p>
+          </article>
+          <article class="arch-card">
+            <span class="arch-num">02</span>
+            <h3>Умная выдача 21 дня</h3>
+            <p>Новый урок приходит ровно в выбранное участницей утреннее или вечернее время. Умные напоминания бережно возвращают в ритм.</p>
+          </article>
+          <article class="arch-card">
+            <span class="arch-num">03</span>
+            <h3>Автооплата и 54-ФЗ чеки</h3>
+            <p>Оплата в 2 касания внутри Telegram через ЮKassa / Prodamus по карте или СБП с мгновенным открытием нужного тарифа.</p>
+          </article>
+          <article class="arch-card">
+            <span class="arch-num">04</span>
+            <h3>Панель аналитики для вас</h3>
+            <p>Живые цифры конверсии каждого поста и рекламы: кто вошёл, какой тариф выбрал и на каком дне доходимость выше 80%.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="demo-footer">
+    <div class="wrap footer-inner">
+      <div>
+        <b>Демо-прототип Telegram Mini App · Школа Елены Витчак</b>
+        <span>Подготовлено студией gasanov.az для презентации второго продукта</span>
+      </div>
+      <div class="footer-actions">
+        <a href="../">← Вернуться на лендинг HR-ретрита</a>
+        <a href="../studio/">Смотреть Концепт 2 (Флагман Школы · Люди + ИИ) →</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js?v=1"></script>
+</body>
+</html>
