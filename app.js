@@ -252,7 +252,7 @@
         submitLeadBtn.textContent = `Запросить счёт на компанию (${activePriceLabel})`;
       } else {
         submitLeadBtn.textContent = earlyActive
-          ? `Зафиксировать ${activePriceLabel} и получить ссылку`
+          ? `Отправить заявку и получить ссылку (${activePriceLabel})`
           : `Получить ссылку на оплату (${activePriceLabel})`;
       }
     }
@@ -282,7 +282,7 @@
       const activePriceLabel = formatRub(getActivePriceRub());
       if (leadComment && !leadComment.value.trim()) {
         leadComment.value = isEarlyBirdActive()
-          ? `Прошу зафиксировать место по цене ${activePriceLabel} (раннее бронирование до ${ANALYTICS_CONFIG.earlyDeadlineLabel}) и направить ссылку на оплату от ИП.`
+          ? `Прошу оформить участие по ранней цене ${activePriceLabel} (до ${ANALYTICS_CONFIG.earlyDeadlineLabel}, полная стоимость 59 000 ₽) и направить ссылку на оплату от ИП.`
           : `Прошу направить прямую ссылку на оплату участия от ИП (${activePriceLabel}).`;
       }
       setTimeout(() => {

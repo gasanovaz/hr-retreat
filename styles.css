@@ -373,16 +373,16 @@
   --teal: #144e46;
   --teal-dark: #0e3832;
   --teal-soft: #e6efec;
-  --champagne: #ebd27c;
-  --champagne-soft: #f7ecc1;
+  --champagne: #ecd09b;
+  --champagne-soft: #f7edda;
   --gold-text: #6e5011;
   --accent-rgb: 20, 78, 70;
   --header-glass: rgba(244, 240, 232, 0.92);
   --card-caption-bg: rgba(14, 56, 50, 0.6);
   --hero-shadow: 0 22px 48px -24px rgba(14, 56, 50, 0.38);
-  --tariff-border: #c9ab48;
-  --portrait-glow: rgba(235, 210, 124, 0.24);
-  --portrait-glow-fade: rgba(235, 210, 124, 0.05);
+  --tariff-border: #c5a36e;
+  --portrait-glow: rgba(236, 208, 155, 0.24);
+  --portrait-glow-fade: rgba(236, 208, 155, 0.05);
   --photo-surface: linear-gradient(180deg, #faf7f1 0%, #ede6d8 100%);
 
   --radius-sm: 6px;
@@ -906,7 +906,7 @@ section, [id] {
 
 .hero-meta-line {
   display: grid;
-  grid-template-columns: 1.25fr 0.85fr 1fr;
+  grid-template-columns: 1.15fr 0.85fr 1.1fr;
   gap: 14px;
   padding: 13px 0;
   border-top: 1px solid var(--line);
@@ -942,8 +942,22 @@ section, [id] {
 }
 
 .hero-meta-sub {
-  font-size: 0.72rem;
+  font-size: 0.74rem;
   color: var(--ink-muted);
+}
+
+.hero-meta-early {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 4px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--teal-soft);
+  color: var(--teal-dark);
+  font-size: 0.73rem;
+  font-weight: 700;
+  width: fit-content;
+  white-space: nowrap;
 }
 
 .hero-cta-row {
@@ -1009,15 +1023,29 @@ section, [id] {
   border-color: var(--champagne);
 }
 
-.nav-node-k {
+.nav-node-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.nav-node-k,
+.nav-node-date {
   font-size: 0.65rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.07em;
-  opacity: 0.78;
+  opacity: 0.82;
+  white-space: nowrap;
 }
 
-.nav-node.is-accent .nav-node-k {
+.nav-node-date {
+  opacity: 0.92;
+}
+
+.nav-node.is-accent .nav-node-k,
+.nav-node.is-accent .nav-node-date {
   color: var(--teal-dark);
   opacity: 1;
 }
@@ -1311,10 +1339,27 @@ section, [id] {
 }
 
 .step-kicker {
-  font-size: 0.78rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed var(--line);
+}
+
+.step-kicker-num {
+  font-size: 0.72rem;
   font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gold-text);
+}
+
+.step-kicker-date {
+  font-size: 0.82rem;
+  font-weight: 600;
   color: var(--teal);
-  margin-bottom: 10px;
+  font-variant-numeric: tabular-nums;
 }
 
 .step-cell h3 {
@@ -1334,9 +1379,20 @@ section, [id] {
   margin-top: auto;
   padding-top: 10px;
   border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
   font-size: 0.8rem;
-  font-weight: 600;
+  line-height: 1.38;
   color: var(--ink);
+}
+
+.step-out-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--gold-text);
 }
 
 .followup-strip {
@@ -1622,12 +1678,39 @@ section, [id] {
   margin-bottom: 6px;
 }
 
-.tariff-price-row {
+.tariff-base-line {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
+  justify-content: space-between;
   gap: 8px 14px;
-  margin-bottom: 6px;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.52);
+  border: 1px solid rgba(18, 23, 22, 0.12);
+  margin-bottom: 12px;
+}
+
+.tariff-base-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ink-muted);
+}
+
+.tariff-base-val {
+  font-family: var(--font-display);
+  font-size: 1.28rem;
+  font-weight: 700;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.tariff-price-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+  margin-bottom: 10px;
 }
 
 .tariff-price {
@@ -1642,7 +1725,7 @@ section, [id] {
 .tariff-early-pill {
   display: inline-flex;
   align-items: center;
-  padding: 4px 10px;
+  padding: 5px 11px;
   border-radius: 999px;
   background: var(--teal);
   color: var(--bg-soft);
@@ -1656,15 +1739,38 @@ section, [id] {
   font-size: 0.85rem;
   font-weight: 600;
   color: var(--teal-dark);
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
-.tariff-schedule {
-  font-size: 0.92rem;
-  font-weight: 500;
-  margin-bottom: 18px;
-  padding-bottom: 16px;
+.tariff-schedule-grid {
+  display: grid;
+  grid-template-columns: 1.35fr 0.65fr;
+  gap: 10px 14px;
+  padding: 12px 0 16px;
+  margin-bottom: 16px;
+  border-top: 1px solid rgba(18, 23, 22, 0.16);
   border-bottom: 1px solid rgba(18, 23, 22, 0.22);
+}
+
+.tariff-schedule-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tariff-schedule-item span {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--teal-dark);
+}
+
+.tariff-schedule-item b {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
 }
 
 .tariff-rows {
@@ -2395,6 +2501,10 @@ section, [id] {
   .tariff-card,
   .form-card {
     padding: 22px 18px;
+  }
+  .tariff-schedule-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
   }
   .tariff-card {
     gap: 18px;
