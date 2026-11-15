@@ -365,7 +365,7 @@
   --bg-soft: #faf7f1;
   --surface: #ffffff;
   --ink: #121716;
-  --ink-muted: #505b58;
+  --ink-muted: #465854;
   --line: rgba(18, 23, 22, 0.14);
   --line-strong: rgba(18, 23, 22, 0.28);
 
@@ -375,7 +375,7 @@
   --teal-soft: #e6efec;
   --champagne: #ebd27c;
   --champagne-soft: #f7ecc1;
-  --gold-text: #836211;
+  --gold-text: #6e5011;
   --accent-rgb: 20, 78, 70;
   --header-glass: rgba(244, 240, 232, 0.92);
   --card-caption-bg: rgba(14, 56, 50, 0.6);
@@ -400,7 +400,7 @@ html[data-theme="editorial"] {
   --bg-soft: #fcf9f6;
   --surface: #ffffff;
   --ink: #1c1417;
-  --ink-muted: #5c4e52;
+  --ink-muted: #594348;
   --line: rgba(28, 20, 23, 0.14);
   --line-strong: rgba(28, 20, 23, 0.28);
 
@@ -435,6 +435,17 @@ html[data-theme="editorial"] .sec h2 {
   letter-spacing: -0.015em;
 }
 
+html[data-theme="editorial"] .hero h1,
+html[data-theme="editorial"] .sec h2,
+html[data-theme="editorial"] .author-top h3,
+html[data-theme="editorial"] .tariff-price,
+html[data-theme="editorial"] .author-stats b,
+html[data-theme="editorial"] .sec-num,
+html[data-theme="editorial"] .step-num,
+html[data-theme="editorial"] .deliverable-num {
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
 html[data-theme="editorial"] .author-top h3,
 html[data-theme="editorial"] .tariff-price {
   letter-spacing: -0.01em;
@@ -455,7 +466,7 @@ html[data-theme="graphite"] {
   --teal-soft: #e2eaf4;
   --champagne: #f1c98d;
   --champagne-soft: #fcecd2;
-  --gold-text: #8b5714;
+  --gold-text: #7c5816;
   --accent-rgb: 29, 53, 87;
   --header-glass: rgba(239, 242, 247, 0.92);
   --card-caption-bg: rgba(16, 33, 58, 0.65);
@@ -489,8 +500,47 @@ body {
   color: var(--ink);
   font-family: var(--font-sans);
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  font-synthesis: none;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--gold-text);
+  outline-offset: 3px;
+}
+
+.theme-bar :focus-visible,
+.hero-card :focus-visible,
+.btn-dark:focus-visible,
+.btn-teal:focus-visible,
+.site-footer :focus-visible,
+.cookie-banner :focus-visible {
+  outline-color: var(--champagne);
+}
+
+html[data-pricing-phase="standard"] [data-early-bird-only],
+html:not([data-pricing-phase="standard"]) [data-standard-only] {
+  display: none !important;
+}
+
+.tariff-price,
+.hero-meta-cell b,
+.author-stats b,
+.sec-num,
+.step-num,
+.deliverable-num {
+  font-variant-numeric: tabular-nums;
+}
+
+.hp-field {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
 }
 
 main {
