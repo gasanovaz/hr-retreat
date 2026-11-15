@@ -2295,6 +2295,9 @@ section, [id] {
   .form-card {
     padding: 22px 18px;
   }
+  .tariff-card {
+    gap: 18px;
+  }
   .tariff-row {
     flex-wrap: wrap;
     gap: 2px 12px;
