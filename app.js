@@ -248,13 +248,18 @@
     if (payerPillB2b) payerPillB2b.classList.toggle('is-active', isB2b);
     if (b2bCompanyField) b2bCompanyField.hidden = !isB2b;
     if (submitLeadBtn) {
+      let labelPrefix;
       if (isB2b) {
-        submitLeadBtn.textContent = `Запросить счёт на компанию (${activePriceLabel})`;
+        labelPrefix = 'Запросить счёт на компанию ';
       } else {
-        submitLeadBtn.textContent = earlyActive
-          ? `Отправить заявку и получить ссылку (${activePriceLabel})`
-          : `Получить ссылку на оплату (${activePriceLabel})`;
+        labelPrefix = earlyActive
+          ? 'Отправить заявку и получить ссылку '
+          : 'Получить ссылку на оплату ';
       }
+      const priceSpan = document.createElement('span');
+      priceSpan.style.whiteSpace = 'nowrap';
+      priceSpan.textContent = `(${activePriceLabel})`;
+      submitLeadBtn.replaceChildren(document.createTextNode(labelPrefix), priceSpan);
     }
   }
 
