@@ -828,9 +828,18 @@ section, [id] {
 }
 
 .hl-champagne {
-  display: inline;
-  background: linear-gradient(transparent 56%, var(--champagne) 56%);
-  padding: 0 4px;
+  display: inline-block;
+  color: var(--gold-text);
+  padding: 0;
+}
+
+.hero-h1-sub {
+  display: block;
+  margin-top: 10px;
+  font-size: 0.68em;
+  line-height: 1.18;
+  letter-spacing: -0.015em;
+  color: var(--ink);
 }
 
 .hl-teal {
@@ -846,26 +855,45 @@ section, [id] {
 }
 
 .hero-meta-line {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px 22px;
-  padding: 12px 0;
+  display: grid;
+  grid-template-columns: 1.25fr 0.85fr 1fr;
+  gap: 14px;
+  padding: 13px 0;
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
   margin-bottom: 24px;
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--ink);
 }
 
-.hero-meta-line span {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+.hero-meta-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
 }
 
-.hero-meta-line b {
+.hero-meta-cell + .hero-meta-cell {
+  padding-left: 14px;
+  border-left: 1px solid var(--line);
+}
+
+.hero-meta-k {
+  font-size: 0.69rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-muted);
+}
+
+.hero-meta-cell b {
+  font-size: 0.84rem;
+  font-weight: 700;
   color: var(--teal);
+  white-space: nowrap;
+}
+
+.hero-meta-sub {
+  font-size: 0.72rem;
+  color: var(--ink-muted);
 }
 
 .hero-cta-row {
@@ -2193,10 +2221,33 @@ section, [id] {
     font-size: 0.98rem;
     margin-bottom: 18px;
   }
+  .eyebrow {
+    font-size: 0.69rem;
+    letter-spacing: 0.055em;
+    white-space: nowrap;
+  }
+  .hl-champagne {
+    padding: 0;
+  }
+  .hero-h1-sub {
+    margin-top: 8px;
+    font-size: 0.78em;
+    line-height: 1.2;
+  }
   .hero-meta-line {
-    font-size: 0.84rem;
-    gap: 8px 14px;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 12px 0;
     margin-bottom: 18px;
+  }
+  .hero-meta-cell + .hero-meta-cell {
+    padding-left: 0;
+    border-left: none;
+    padding-top: 8px;
+    border-top: 1px dashed var(--line);
+  }
+  .hero-meta-cell b {
+    white-space: normal;
   }
   .btn {
     min-height: 48px;
@@ -2336,17 +2387,21 @@ section, [id] {
     text-align: left;
   }
   .theme-bar-inner {
-    padding-top: 7px;
+    padding-top: 6px;
     padding-bottom: 7px;
-    gap: 6px;
+    gap: 5px;
   }
   .theme-bar-label {
-    font-size: 0.72rem;
+    font-size: 0.69rem;
+  }
+  .theme-pills {
+    gap: 5px;
   }
   .theme-pill {
-    font-size: 0.72rem;
-    padding: 4px 9px;
-    min-height: 32px;
+    font-size: 0.69rem;
+    padding: 4px 8px;
+    min-height: 29px;
+    gap: 5px;
   }
   .cookie-banner {
     right: 12px;
