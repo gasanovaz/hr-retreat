@@ -13,7 +13,8 @@
   <meta property="og:image" content="assets/elena-about.webp?v=4">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23144e46'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='system-ui,sans-serif' font-weight='700' font-size='34' fill='%23ebd27c'%3E%D0%92%3C/text%3E%3C/svg%3E">
   <link rel="preload" href="assets/elena-about.webp?v=4" as="image" type="image/webp" fetchpriority="high">
-  <link rel="stylesheet" href="styles.css?v=5">
+  <script>(function(){try{var q=new URLSearchParams(location.search).get('theme');var m={'1':'skolkovo','skolkovo':'skolkovo','2':'editorial','editorial':'editorial','3':'graphite','graphite':'graphite'};if(q&&m[q])document.documentElement.dataset.theme=m[q];}catch(_){}})();</script>
+  <link rel="stylesheet" href="styles.css?v=6">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -49,6 +50,27 @@
       <a href="https://yookassa.ru/my/i/ai_qNXLO-eTd/l" target="_blank" rel="noopener noreferrer">Оплатить 59 000 ₽ в ЮKassa</a>
     </div>
   </noscript>
+
+  <!-- Theme Switcher Showcase (3 executive palette & typography variants) -->
+  <div class="theme-bar" role="region" aria-label="Выбор варианта дизайна">
+    <div class="wrap theme-bar-inner">
+      <span class="theme-bar-label">Варианты цвета и шрифта для сравнения:</span>
+      <div class="theme-pills" role="group" aria-label="Палитра и шрифт">
+        <button type="button" class="theme-pill is-active" data-theme-choice="skolkovo" aria-pressed="true">
+          <span class="theme-dots" aria-hidden="true"><span class="theme-dot" style="background:#144e46"></span><span class="theme-dot" style="background:#ebd27c"></span></span>
+          <span>1. Изумруд · IBM Plex</span>
+        </button>
+        <button type="button" class="theme-pill" data-theme-choice="editorial" aria-pressed="false">
+          <span class="theme-dots" aria-hidden="true"><span class="theme-dot" style="background:#622230"></span><span class="theme-dot" style="background:#dfc3ae"></span></span>
+          <span>2. Бордо · Cormorant + Inter</span>
+        </button>
+        <button type="button" class="theme-pill" data-theme-choice="graphite" aria-pressed="false">
+          <span class="theme-dots" aria-hidden="true"><span class="theme-dot" style="background:#1d3557"></span><span class="theme-dot" style="background:#f1c98d"></span></span>
+          <span>3. Индиго · Manrope</span>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- Header -->
   <header class="site-header">
@@ -798,6 +820,6 @@
     </div>
   </aside>
 
-  <script src="app.js?v=5"></script>
+  <script src="app.js?v=6"></script>
 </body>
 </html>

@@ -394,6 +394,59 @@
       .replaceAll('"', '&quot;');
   }
 
+  /** Переключатель 3 вариантов оформления (цвет + шрифтовая пара) */
+  function initThemeSwitcher() {
+    const THEME_META = {
+      skolkovo: '#144E46',
+      editorial: '#622230',
+      graphite: '#1D3557',
+    };
+    const ALIAS = { '1': 'skolkovo', '2': 'editorial', '3': 'graphite' };
+    const buttons = document.querySelectorAll('[data-theme-choice]');
+    const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+
+    const normalize = (val) => {
+      const key = ALIAS[val] || val;
+      return THEME_META[key] ? key : 'skolkovo';
+    };
+
+    const applyTheme = (rawTheme, updateUrl) => {
+      const theme = normalize(rawTheme);
+      if (theme === 'skolkovo') {
+        document.documentElement.removeAttribute('data-theme');
+      } else {
+        document.documentElement.dataset.theme = theme;
+      }
+      if (themeColorMeta) themeColorMeta.setAttribute('content', THEME_META[theme]);
+
+      buttons.forEach((btn) => {
+        const active = btn.getAttribute('data-theme-choice') === theme;
+        btn.classList.toggle('is-active', active);
+        btn.setAttribute('aria-pressed', String(active));
+      });
+
+      if (updateUrl) {
+        try {
+          const url = new URL(window.location.href);
+          url.searchParams.set('theme', theme);
+          window.history.replaceState({}, '', url.toString());
+        } catch (_) {}
+      }
+    };
+
+    const initialParam = new URLSearchParams(window.location.search).get('theme');
+    applyTheme(initialParam || document.documentElement.dataset.theme || 'skolkovo', false);
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const chosen = btn.getAttribute('data-theme-choice') || 'skolkovo';
+        applyTheme(chosen, true);
+        trackEvent('theme_switch', { theme: chosen });
+      });
+    });
+  }
+
+  initThemeSwitcher();
   syncUtmInputs();
   initCookieConsent();
   trackEvent('page_view_vitchak_retreat');
