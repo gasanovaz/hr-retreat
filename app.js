@@ -443,7 +443,7 @@
       editorial: '#622230',
       graphite: '#1D3557',
     };
-    const ALIAS = { '1': 'emerald', skolkovo: 'emerald', '2': 'editorial', '3': 'graphite' };
+    const ALIAS = { '1': 'emerald', '2': 'editorial', '3': 'graphite' };
     const buttons = document.querySelectorAll('[data-theme-choice]');
     const themeColorMeta = document.querySelector('meta[name="theme-color"]');
 
