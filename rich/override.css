@@ -1,28 +1,69 @@
-/* Вариант «Изумрудная биография + акценты» — строго 2 цвета: Изумруд (#144e46) + тёплый Шампань (#ecd09b) */
+/* Вариант 2 · «Изумрудная биография + акценты» — мягко окрашенный старт и изумрудные вставки */
 
 .theme-pill {
   text-decoration: none;
 }
 
-/* 1. Изумрудная бегущая строка под первым экраном */
+/* 1. Мягкий нефритово-шалфейный верх (отличается уже на первом экране) */
+:root {
+  --header-glass: rgba(226, 238, 234, 0.92);
+}
+
+.site-header {
+  background: rgba(226, 238, 234, 0.92);
+  border-bottom-color: rgba(20, 78, 70, 0.14);
+}
+
+.site-header::before {
+  background: rgba(226, 238, 234, 0.92);
+}
+
+.hero {
+  background: linear-gradient(175deg, #dceae5 0%, #f3f1ea 100%);
+}
+
+.hero-meta-line {
+  border-top-color: rgba(20, 78, 70, 0.16);
+  border-bottom-color: rgba(20, 78, 70, 0.16);
+}
+
+.hero-meta-cell + .hero-meta-cell {
+  border-left-color: rgba(20, 78, 70, 0.16);
+}
+
+.hero-meta-early {
+  background: #d7e8e3;
+  color: #0e3832;
+}
+
+/* 2. Изумрудная бегущая строка под первым экраном */
 .ticker {
   background: #144e46;
-  border-top-color: rgba(236, 208, 155, 0.28);
-  border-bottom-color: rgba(236, 208, 155, 0.28);
+  border-top-color: rgba(236, 208, 155, 0.32);
+  border-bottom-color: rgba(236, 208, 155, 0.32);
 }
 
 .ticker-item {
-  color: #f4f1ea;
+  color: #f6f3ec;
 }
 
 .ticker-sep {
   color: #ecd09b;
 }
 
-/* 2. Лёгкий шалфейный ритм в блоке «Это пространство для тех, кто:» (Секция 01) */
+/* 3. Секция 01: тёпло-шалфейные акценты */
+#audience .aud-card {
+  border-color: rgba(20, 78, 70, 0.18);
+}
+
+#audience .aud-tag {
+  background: #e1ece8;
+  color: #103c36;
+}
+
 .audience-for-strip {
-  background: #e9f0ed;
-  border-color: rgba(20, 78, 70, 0.22);
+  background: #e3ede9;
+  border-color: rgba(20, 78, 70, 0.24);
 }
 
 .audience-for-item {
@@ -30,10 +71,16 @@
   border-color: rgba(20, 78, 70, 0.14);
 }
 
-/* 3. Глубокая изумрудная полоса Follow-up в Секции 02 */
+/* 4. Секция 02: шалфейный фон программы + тёмно-изумрудный Follow-up */
+#program {
+  background: #eaf1ee;
+  border-top: 1px solid rgba(20, 78, 70, 0.12);
+  border-bottom: 1px solid rgba(20, 78, 70, 0.12);
+}
+
 .followup-strip {
   background: linear-gradient(135deg, #144e46 0%, #0e3832 100%);
-  border-color: rgba(236, 208, 155, 0.36);
+  border-color: rgba(236, 208, 155, 0.38);
   color: #d9e6e2;
 }
 
@@ -53,10 +100,10 @@
   color: #102a25;
 }
 
-/* 4. Карточка биографии Елены Витчак (Секция 03) — глубокая изумрудная подложка + шампань */
+/* 5. Секция 03: карточка биографии Елены Витчак — глубокий изумруд + шампань */
 #outcomes .author-panel {
   background: linear-gradient(155deg, #144e46 0%, #0e3731 100%);
-  border-color: rgba(236, 208, 155, 0.42);
+  border-color: rgba(236, 208, 155, 0.45);
   color: #f5f2eb;
   box-shadow: 0 24px 48px -22px rgba(14, 55, 49, 0.42);
 }
@@ -109,18 +156,18 @@
   }
 }
 
-/* 5. Мягкая изумрудная тонировка секции отзывов (Секция 04) */
+/* 6. Секция 04: шалфейная подложка секции отзывов */
 #reviews {
-  background: #e9f0ed;
+  background: #e6efeb;
   border-top: 1px solid rgba(20, 78, 70, 0.12);
   border-bottom: 1px solid rgba(20, 78, 70, 0.12);
 }
 
 #reviews .rev-card {
-  border-color: rgba(20, 78, 70, 0.16);
+  border-color: rgba(20, 78, 70, 0.18);
 }
 
-/* 6. Благородный глубокий изумрудный финал (Подвал) */
+/* 7. Глубокий изумрудный финал */
 .site-footer {
   background: #103933;
   color: #cfe0dc;

@@ -1,32 +1,181 @@
-/* Вариант «Насыщенный Изумруд × Шампань» — выразительный цветовой ритм до самого низа */
+/* Вариант 3 · «Насыщенный Изумруд × Шампань» — полный изумрудный первый экран + цветной ритм до самого низа */
 
 .theme-pill {
   text-decoration: none;
 }
 
-/* 1. Насыщенная изумрудная бегущая строка */
-.ticker {
-  background: #144e46;
-  border-top-color: rgba(236, 208, 155, 0.34);
-  border-bottom-color: rgba(236, 208, 155, 0.34);
+/* 1. Шапка и полностью глубокий изумрудный первый экран (сразу другой контраст!) */
+:root {
+  --header-glass: rgba(14, 52, 46, 0.94);
 }
 
-.ticker-item {
-  color: #faf7f0;
+.site-header {
+  background: rgba(14, 52, 46, 0.94);
+  border-bottom-color: rgba(236, 208, 155, 0.22);
+  color: #f6f3ec;
 }
 
-.ticker-sep {
+.site-header::before {
+  background: rgba(14, 52, 46, 0.94);
+}
+
+.site-header .brand-title {
+  color: #ffffff;
+}
+
+.site-header .brand-sub {
+  color: #c7dad5;
+}
+
+.site-header .nav-links a {
+  color: #e0ebe8;
+}
+
+.site-header .nav-links a:hover {
   color: #ecd09b;
 }
 
-/* 2. Секция 01: глубокая изумрудная полоса «Это пространство для тех, кто:» */
+.site-header .header-phone {
+  color: #ecd09b;
+}
+
+.site-header .btn-dark {
+  background: #ecd09b;
+  color: #0e312b;
+  border-color: #ecd09b;
+}
+
+.site-header .btn-dark:hover {
+  background: #f4e2bc;
+}
+
+.site-header .burger {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(236, 208, 155, 0.35);
+  color: #faf7f0;
+}
+
+.site-header .mobile-nav {
+  background: #0f3832;
+  border-top-color: rgba(236, 208, 155, 0.2);
+}
+
+.site-header .mobile-nav a {
+  color: #f4f1ea;
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.hero {
+  background: linear-gradient(155deg, #144e46 0%, #0d332d 100%);
+  color: #f6f3ec;
+}
+
+.hero .eyebrow {
+  color: #ecd09b;
+}
+
+.hero .eyebrow-dot {
+  background: #ecd09b;
+}
+
+.hero h1 {
+  color: #ffffff;
+}
+
+.hero .hl-champagne {
+  color: #ecd09b;
+}
+
+.hero .hero-h1-sub {
+  color: #e6efec;
+}
+
+.hero .hl-teal {
+  color: #ecd09b;
+}
+
+.hero .hero-lead {
+  color: #d6e4e0;
+}
+
+.hero .hero-meta-line {
+  border-top-color: rgba(236, 208, 155, 0.26);
+  border-bottom-color: rgba(236, 208, 155, 0.26);
+}
+
+.hero .hero-meta-cell + .hero-meta-cell {
+  border-left-color: rgba(236, 208, 155, 0.26);
+}
+
+.hero .hero-meta-k {
+  color: #bfd2cd;
+}
+
+.hero .hero-meta-cell b {
+  color: #ffffff;
+}
+
+.hero .hero-meta-sub {
+  color: #d3e2de;
+}
+
+.hero .hero-meta-early {
+  background: rgba(236, 208, 155, 0.18);
+  border: 1px solid rgba(236, 208, 155, 0.42);
+  color: #f5dfb0;
+}
+
+.hero .btn-teal {
+  background: #ecd09b;
+  border-color: #ecd09b;
+  color: #0e312b;
+}
+
+.hero .btn-teal:hover {
+  background: #f4e2bc;
+  border-color: #f4e2bc;
+}
+
+.hero .btn-outline {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(236, 208, 155, 0.42);
+  color: #f6f3ec;
+}
+
+.hero .btn-outline:hover {
+  background: rgba(236, 208, 155, 0.14);
+  border-color: #ecd09b;
+}
+
+.hero .hero-card {
+  background: #0b2b26;
+  border-color: rgba(236, 208, 155, 0.45);
+  box-shadow: 0 32px 64px -20px rgba(4, 18, 16, 0.72);
+}
+
+/* 2. Контрастная тёпло-золотистая бегущая строка сразу после изумрудного Hero */
+.ticker {
+  background: #f4e7c8;
+  border-top-color: rgba(20, 78, 70, 0.22);
+  border-bottom-color: rgba(20, 78, 70, 0.22);
+}
+
+.ticker-item {
+  color: #103a34;
+}
+
+.ticker-sep {
+  color: #725216;
+}
+
+/* 3. Секция 01: глубокая изумрудная полоса «Это пространство для тех, кто:» */
 #audience .aud-card {
   border-color: rgba(20, 78, 70, 0.22);
 }
 
 #audience .audience-for-strip {
   background: linear-gradient(145deg, #144e46 0%, #0f3b35 100%);
-  border-color: rgba(236, 208, 155, 0.38);
+  border-color: rgba(236, 208, 155, 0.4);
 }
 
 #audience .audience-for-title {
@@ -35,19 +184,19 @@
 
 #audience .audience-for-item {
   background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(236, 208, 155, 0.28);
+  border-color: rgba(236, 208, 155, 0.3);
   color: #f5f3ec;
 }
 
-/* 3. Секция 02: тёпло-шалфейный фон + Встреча 04 в шампань-золоте + изумрудный Follow-up */
+/* 4. Секция 02: нефритовый фон + Встреча 04 в шампань-золоте + изумрудный Follow-up */
 #program {
-  background: #e9f0ed;
-  border-top: 1px solid rgba(20, 78, 70, 0.1);
-  border-bottom: 1px solid rgba(20, 78, 70, 0.1);
+  background: #e6efec;
+  border-top: 1px solid rgba(20, 78, 70, 0.14);
+  border-bottom: 1px solid rgba(20, 78, 70, 0.14);
 }
 
 #program .steps-grid {
-  border-color: rgba(20, 78, 70, 0.2);
+  border-color: rgba(20, 78, 70, 0.22);
 }
 
 #program .step-cell:last-child {
@@ -60,7 +209,7 @@
 
 #program .followup-strip {
   background: linear-gradient(135deg, #144e46 0%, #0d332e 100%);
-  border-color: rgba(236, 208, 155, 0.4);
+  border-color: rgba(236, 208, 155, 0.42);
   color: #d9e6e2;
 }
 
@@ -77,19 +226,18 @@
 #program .followup-strip .btn-dark:hover {
   background: #f3dfb5;
   border-color: #f3dfb5;
-  color: #102a25;
 }
 
-/* 4. Секция 03: биография Елены Витчак — глубокий изумруд + шампань */
+/* 5. Секция 03: биография Елены Витчак — глубокий изумруд + шампань */
 #outcomes .checklist {
-  border-color: rgba(20, 78, 70, 0.2);
+  border-color: rgba(20, 78, 70, 0.22);
 }
 
 #outcomes .author-panel {
   background: linear-gradient(155deg, #144e46 0%, #0d342e 100%);
-  border-color: rgba(236, 208, 155, 0.45);
+  border-color: rgba(236, 208, 155, 0.48);
   color: #f5f2eb;
-  box-shadow: 0 26px 52px -22px rgba(14, 55, 49, 0.46);
+  box-shadow: 0 26px 52px -22px rgba(14, 55, 49, 0.48);
 }
 
 #outcomes .author-top {
@@ -140,7 +288,7 @@
   }
 }
 
-/* 5. Секция 04 (Отзывы) — полностью глубокий изумруд + светлые карточки отзывов */
+/* 6. Секция 04: полностью глубокая изумрудная полоса отзывов */
 #reviews {
   background: linear-gradient(180deg, #144e46 0%, #0f3a34 100%);
   color: #f7f4ed;
@@ -160,14 +308,14 @@
 
 #reviews .rev-card {
   background: #fbf9f4;
-  border-color: rgba(236, 208, 155, 0.45);
-  box-shadow: 0 22px 44px -20px rgba(7, 25, 22, 0.5);
+  border-color: rgba(236, 208, 155, 0.48);
+  box-shadow: 0 22px 44px -20px rgba(7, 25, 22, 0.52);
 }
 
-/* 6. Секция 05: Золотой шампань слева + Изумрудная форма заявки справа */
+/* 7. Секция 05: Золотой шампань слева + Изумрудная форма справа */
 #pricing .form-card {
   background: linear-gradient(160deg, #144e46 0%, #0e3832 100%);
-  border-color: rgba(236, 208, 155, 0.44);
+  border-color: rgba(236, 208, 155, 0.45);
   color: #f5f2eb;
 }
 
@@ -246,7 +394,12 @@
   color: #ecd09b;
 }
 
-/* 7. Глубокий изумрудный финал (Подвал) */
+/* 8. Нежный нефритовый фон FAQ + глубокий изумрудный финал */
+#faq {
+  background: #edf3f0;
+  border-top: 1px solid rgba(20, 78, 70, 0.1);
+}
+
 .site-footer {
   background: #0d2f2a;
   color: #cfe0dc;
