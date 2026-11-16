@@ -1,8 +1,8 @@
 <?php
 /**
  * HR Ретрит · Школа Елены Витчак
- * Серверный обработчик заявок для размещения на российском хостинге vitchakschool.ru (152-ФЗ).
- * Активируется при переносе сайта на боевой домен (ANALYTICS_CONFIG.webhookEndpoint = '/api/hr-retreat-lead.php').
+ * Серверный обработчик заявок для размещения на российском хостинге evitchak.ru (152-ФЗ).
+ * Активируется автоматически на боевом домене (ANALYTICS_CONFIG.webhookEndpoint = '/api/hr-retreat-lead.php').
  */
 declare(strict_types=1);
 
@@ -88,15 +88,24 @@ if ($pageUrl !== '') {
 }
 $bodyLines[] = 'Дата (МСК): ' . $mskNow->format('Y-m-d H:i:s');
 
-$headers = "From: Школа Елены Витчак <no-reply@vitchakschool.ru>\r\n"
+$headers = "From: Школа Елены Витчак <no-reply@evitchak.ru>\r\n"
     . ($emailValid !== '' ? "Reply-To: {$emailValid}\r\n" : '')
     . "MIME-Version: 1.0\r\n"
     . "Content-Type: text/plain; charset=utf-8\r\n";
 
 $mailSent = @mail('hr.retrit@yandex.ru', $subject, implode("\n", $bodyLines), $headers);
 
-// Локальный резервный журнал вне публичной корневой директории webroot
+// Локальный резервный журнал вне публичной корневой директории webroot (или в защищённом api/.leads_storage)
 $logDir = dirname(__DIR__, 2) . '/private_leads';
+if (!is_dir($logDir)) {
+    @mkdir($logDir, 0750, true);
+}
+if (!is_dir($logDir) || !is_writable($logDir)) {
+    $logDir = __DIR__ . '/.leads_storage';
+    if (!is_dir($logDir)) {
+        @mkdir($logDir, 0750, true);
+    }
+}
 $logged = false;
 if (is_dir($logDir) && is_writable($logDir)) {
     $record = [

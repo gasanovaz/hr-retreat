@@ -7,7 +7,7 @@
 
   const ANALYTICS_CONFIG = {
     ymCounterId: null, // ID счётчика Яндекс.Метрики (указывается после подключения кабинета клиента)
-    webhookEndpoint: '', // Серверный обработчик на домене РФ (автоподстановка /api/hr-retreat-lead.php на vitchakschool.ru)
+    webhookEndpoint: '', // Серверный обработчик на домене РФ (автоподстановка /api/hr-retreat-lead.php на evitchak.ru / evitchak.com)
     whatsappPhone: '79256697377',
     telegramHandle: 'alvitcha',
     b2bEmail: 'hr.retrit@yandex.ru',
@@ -33,11 +33,18 @@
     return Date.now() <= EARLY_DEADLINE_MS;
   }
 
-  /** Возвращает URL серверного обработчика с учётом домена vitchakschool.ru */
+  /** Возвращает URL серверного обработчика с учётом боевых доменов evitchak.ru / evitchak.com */
   function getWebhookEndpoint() {
     if (ANALYTICS_CONFIG.webhookEndpoint) return ANALYTICS_CONFIG.webhookEndpoint;
-    const host = window.location.hostname;
-    if (host === 'vitchakschool.ru' || host === 'www.vitchakschool.ru') {
+    const host = window.location.hostname.toLowerCase();
+    if (
+      host === 'evitchak.ru' ||
+      host === 'www.evitchak.ru' ||
+      host === 'evitchak.com' ||
+      host === 'www.evitchak.com' ||
+      host === 'localhost' ||
+      host === '127.0.0.1'
+    ) {
       return '/api/hr-retreat-lead.php';
     }
     return '';

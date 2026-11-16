@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Host: https://evitchak.ru
+Sitemap: https://evitchak.ru/sitemap.xml
