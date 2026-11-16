@@ -8,7 +8,7 @@
   const ANALYTICS_CONFIG = {
     ymCounterId: null, // ID счётчика Яндекс.Метрики (указывается после подключения кабинета клиента)
     webhookEndpoint: '', // Серверный обработчик на домене РФ (автоподстановка /api/hr-retreat-lead.php на vitchakschool.ru)
-    whatsappPhone: '79851010777',
+    whatsappPhone: '79256697377',
     telegramHandle: 'alvitcha',
     b2bEmail: 'hr.retrit@yandex.ru',
     yookassaUrl: '', // Временно скрыта устаревшая ссылка (старая сумма 39 000 ₽ и старое название); подставить новую на 50 000 / 59 000 ₽ от бухгалтера

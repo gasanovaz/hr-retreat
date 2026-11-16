@@ -62,7 +62,7 @@ $pageUrl = $cleanSingleLine($data['pageUrl'] ?? ($data['page_url'] ?? ''));
 
 $subject = '=?UTF-8?B?' . base64_encode("Заявка HR-ретрит ({$modeLabel}) — {$name}") . '?=';
 $bodyLines = [
-    'Новая заявка с лендинга «HR-ретрит: Следующий уровень»',
+    'Новая заявка с лендинга «HR-ретрит: следующий уровень»',
     "Режим оплаты: {$modeLabel}",
     "Актуальная цена на момент заявки: {$activePrice} ₽",
     "Имя: {$name}",

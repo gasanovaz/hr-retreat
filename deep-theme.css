@@ -1,0 +1,424 @@
+/* Финальная утверждённая палитра · Насыщенный Изумруд (#144e46) × Шампань (#ecd09b) */
+
+:root {
+  --header-glass: rgba(14, 52, 46, 0.94);
+}
+
+.site-header {
+  background: rgba(14, 52, 46, 0.94);
+  border-bottom-color: rgba(236, 208, 155, 0.22);
+  color: #f6f3ec;
+}
+
+.site-header::before {
+  inset: 0;
+  background: rgba(14, 52, 46, 0.94);
+}
+
+.site-header .brand-title {
+  color: #ffffff;
+}
+
+.site-header .brand-sub {
+  color: #c7dad5;
+}
+
+.site-header .nav-links a {
+  color: #e0ebe8;
+}
+
+.site-header .nav-links a:hover {
+  color: #ecd09b;
+}
+
+.site-header .header-phone {
+  color: #ecd09b;
+}
+
+.site-header .btn-dark {
+  background: #ecd09b;
+  color: #0e312b;
+  border-color: #ecd09b;
+}
+
+.site-header .btn-dark:hover {
+  background: #f4e2bc;
+}
+
+.site-header .burger {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(236, 208, 155, 0.35);
+  color: #faf7f0;
+}
+
+.site-header .mobile-nav {
+  background: #0f3832;
+  border-top-color: rgba(236, 208, 155, 0.2);
+}
+
+.site-header .mobile-nav a {
+  color: #f4f1ea;
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.hero {
+  background: linear-gradient(155deg, #144e46 0%, #0d332d 100%);
+  color: #f6f3ec;
+}
+
+.hero .eyebrow {
+  color: #ecd09b;
+}
+
+.hero .eyebrow-dot {
+  background: #ecd09b;
+}
+
+.hero h1 {
+  color: #ffffff;
+}
+
+.hero .hl-champagne {
+  color: #ecd09b;
+}
+
+.hero .hero-h1-sub {
+  color: #e6efec;
+}
+
+.hero .hl-teal {
+  color: #ecd09b;
+}
+
+.hero .hero-lead {
+  color: #d6e4e0;
+}
+
+.hero .hero-meta-line {
+  border-top-color: rgba(236, 208, 155, 0.26);
+  border-bottom-color: rgba(236, 208, 155, 0.26);
+}
+
+.hero .hero-meta-cell + .hero-meta-cell {
+  border-left-color: rgba(236, 208, 155, 0.26);
+}
+
+.hero .hero-meta-k {
+  color: #bfd2cd;
+}
+
+.hero .hero-meta-cell b {
+  color: #ffffff;
+}
+
+.hero .hero-meta-sub {
+  color: #d3e2de;
+}
+
+.hero .hero-meta-early {
+  background: rgba(236, 208, 155, 0.18);
+  border: 1px solid rgba(236, 208, 155, 0.42);
+  color: #f5dfb0;
+}
+
+.hero .btn-teal {
+  background: #ecd09b;
+  border-color: #ecd09b;
+  color: #0e312b;
+}
+
+.hero .btn-teal:hover {
+  background: #f4e2bc;
+  border-color: #f4e2bc;
+}
+
+.hero .btn-outline {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(236, 208, 155, 0.42);
+  color: #f6f3ec;
+}
+
+.hero .btn-outline:hover {
+  background: rgba(236, 208, 155, 0.14);
+  border-color: #ecd09b;
+}
+
+.hero .hero-card {
+  background: #0b2b26;
+  border-color: rgba(236, 208, 155, 0.45);
+  box-shadow: 0 32px 64px -20px rgba(4, 18, 16, 0.72);
+}
+
+/* Бегущая строка под Hero */
+.ticker {
+  background: #f4e7c8;
+  border-top-color: rgba(20, 78, 70, 0.22);
+  border-bottom-color: rgba(20, 78, 70, 0.22);
+}
+
+.ticker-item {
+  color: #103a34;
+}
+
+.ticker-sep {
+  color: #725216;
+}
+
+/* Секция 01 */
+#audience .aud-card {
+  border-color: rgba(20, 78, 70, 0.22);
+}
+
+#audience .audience-for-strip {
+  background: linear-gradient(145deg, #144e46 0%, #0f3b35 100%);
+  border-color: rgba(236, 208, 155, 0.4);
+}
+
+#audience .audience-for-title {
+  color: #ecd09b;
+}
+
+#audience .audience-for-item {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(236, 208, 155, 0.3);
+  color: #f5f3ec;
+}
+
+/* Секция 02 */
+#program {
+  background: #e6efec;
+  border-top: 1px solid rgba(20, 78, 70, 0.14);
+  border-bottom: 1px solid rgba(20, 78, 70, 0.14);
+}
+
+#program .steps-grid {
+  border-color: rgba(20, 78, 70, 0.22);
+}
+
+#program .step-cell:last-child {
+  background: #f8efd9;
+}
+
+#program .step-cell:last-child .step-kicker-num {
+  color: #6d4d13;
+}
+
+#program .followup-strip {
+  background: linear-gradient(135deg, #144e46 0%, #0d332e 100%);
+  border-color: rgba(236, 208, 155, 0.42);
+  color: #d9e6e2;
+}
+
+#program .followup-strip b {
+  color: #ecd09b;
+}
+
+#program .followup-strip .btn-dark {
+  background: #ecd09b;
+  color: #102a25;
+  border-color: #ecd09b;
+}
+
+#program .followup-strip .btn-dark:hover {
+  background: #f3dfb5;
+  border-color: #f3dfb5;
+}
+
+/* Секция 03 */
+#outcomes .checklist {
+  border-color: rgba(20, 78, 70, 0.22);
+}
+
+#outcomes .author-panel {
+  background: linear-gradient(155deg, #144e46 0%, #0d342e 100%);
+  border-color: rgba(236, 208, 155, 0.48);
+  color: #f5f2eb;
+  box-shadow: 0 26px 52px -22px rgba(14, 55, 49, 0.48);
+}
+
+#outcomes .author-top {
+  border-bottom-color: rgba(236, 208, 155, 0.24);
+}
+
+#outcomes .author-photo {
+  background: #1b5950;
+  border: 1.5px solid rgba(236, 208, 155, 0.58);
+}
+
+#outcomes .author-quote {
+  color: #ecd09b;
+}
+
+#outcomes .author-top h3 {
+  color: #ffffff;
+}
+
+#outcomes .author-facts li {
+  color: #d8e4e0;
+}
+
+#outcomes .author-facts li::before {
+  background: #ecd09b;
+}
+
+#outcomes .author-facts strong {
+  color: #ffffff;
+}
+
+#outcomes .stat-cell {
+  border-right-color: rgba(236, 208, 155, 0.24);
+  background: rgba(9, 34, 30, 0.34);
+}
+
+#outcomes .stat-v {
+  color: #ecd09b;
+}
+
+#outcomes .stat-l {
+  color: #d0e1dd;
+}
+
+@media (max-width: 680px) {
+  #outcomes .author-stats .stat-cell:nth-child(-n+2) {
+    border-bottom-color: rgba(236, 208, 155, 0.24);
+  }
+}
+
+/* Секция 04 */
+#reviews {
+  background: linear-gradient(180deg, #144e46 0%, #0f3a34 100%);
+  color: #f7f4ed;
+}
+
+#reviews .sec-num {
+  color: #ecd09b;
+}
+
+#reviews h2 {
+  color: #ffffff;
+}
+
+#reviews .sec-sub {
+  color: #d3e2de;
+}
+
+#reviews .rev-card {
+  background: #fbf9f4;
+  border-color: rgba(236, 208, 155, 0.48);
+  box-shadow: 0 22px 44px -20px rgba(7, 25, 22, 0.52);
+}
+
+/* Секция 05 */
+#pricing .form-card {
+  background: linear-gradient(160deg, #144e46 0%, #0e3832 100%);
+  border-color: rgba(236, 208, 155, 0.45);
+  color: #f5f2eb;
+}
+
+#pricing .form-card h3 {
+  color: #ffffff;
+}
+
+#pricing .form-card .form-desc {
+  color: #d3e2de;
+}
+
+#pricing .form-card .payer-pill {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #dce7e4;
+}
+
+#pricing .form-card .payer-pill.is-active {
+  background: #ecd09b;
+  border-color: #ecd09b;
+  color: #102a25;
+}
+
+#pricing .form-card .field label {
+  color: #eef4f2;
+}
+
+#pricing .form-card .field input,
+#pricing .form-card .field textarea {
+  background: #ffffff;
+  border-color: rgba(236, 208, 155, 0.45);
+  color: #141918;
+}
+
+#pricing .form-card .field input:focus,
+#pricing .form-card .field textarea:focus {
+  border-color: #ecd09b;
+  box-shadow: 0 0 0 3px rgba(236, 208, 155, 0.25);
+}
+
+#pricing .form-card .consent-row {
+  color: #d2e0dc;
+}
+
+#pricing .form-card .consent-row input[type="checkbox"] {
+  accent-color: #ecd09b;
+}
+
+#pricing .form-card .consent-row a {
+  color: #ecd09b;
+}
+
+#pricing .form-card #submitLeadBtn {
+  background: #ecd09b;
+  border-color: #ecd09b;
+  color: #102a25;
+}
+
+#pricing .form-card #submitLeadBtn:hover {
+  background: #f4e2bc;
+  border-color: #f4e2bc;
+}
+
+#pricing .form-card .channel-links a {
+  color: #ecd09b;
+  border-bottom-color: rgba(236, 208, 155, 0.4);
+}
+
+#pricing .form-card .form-feedback {
+  background: rgba(10, 34, 30, 0.72);
+  border-color: rgba(236, 208, 155, 0.42);
+  color: #f4f1ea;
+}
+
+#pricing .form-card .form-feedback a {
+  color: #ecd09b;
+}
+
+/* Секция 06 и Подвал */
+#faq {
+  background: #edf3f0;
+  border-top: 1px solid rgba(20, 78, 70, 0.1);
+}
+
+.site-footer {
+  background: #0d2f2a;
+  color: #cfe0dc;
+  border-top: 1px solid rgba(236, 208, 155, 0.3);
+}
+
+.site-footer .footer-grid b {
+  color: #ecd09b;
+}
+
+.site-footer .footer-links a {
+  color: #edf4f2;
+}
+
+.site-footer .footer-links a:hover {
+  color: #ecd09b;
+}
+
+.site-footer .footer-bottom {
+  border-top-color: rgba(236, 208, 155, 0.22);
+  color: #b7ccc7;
+}
+
+.site-footer .footer-legal-note {
+  color: #9bb3ad;
+}
