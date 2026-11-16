@@ -1,0 +1,149 @@
+/* Вариант «Изумрудная биография + акценты» — строго 2 цвета: Изумруд (#144e46) + тёплый Шампань (#ecd09b) */
+
+.theme-pill {
+  text-decoration: none;
+}
+
+/* 1. Изумрудная бегущая строка под первым экраном */
+.ticker {
+  background: #144e46;
+  border-top-color: rgba(236, 208, 155, 0.28);
+  border-bottom-color: rgba(236, 208, 155, 0.28);
+}
+
+.ticker-item {
+  color: #f4f1ea;
+}
+
+.ticker-sep {
+  color: #ecd09b;
+}
+
+/* 2. Лёгкий шалфейный ритм в блоке «Это пространство для тех, кто:» (Секция 01) */
+.audience-for-strip {
+  background: #e9f0ed;
+  border-color: rgba(20, 78, 70, 0.22);
+}
+
+.audience-for-item {
+  background: #ffffff;
+  border-color: rgba(20, 78, 70, 0.14);
+}
+
+/* 3. Глубокая изумрудная полоса Follow-up в Секции 02 */
+.followup-strip {
+  background: linear-gradient(135deg, #144e46 0%, #0e3832 100%);
+  border-color: rgba(236, 208, 155, 0.36);
+  color: #d9e6e2;
+}
+
+.followup-strip b {
+  color: #ecd09b;
+}
+
+.followup-strip .btn-dark {
+  background: #ecd09b;
+  color: #102a25;
+  border-color: #ecd09b;
+}
+
+.followup-strip .btn-dark:hover {
+  background: #f3dfb5;
+  border-color: #f3dfb5;
+  color: #102a25;
+}
+
+/* 4. Карточка биографии Елены Витчак (Секция 03) — глубокая изумрудная подложка + шампань */
+#outcomes .author-panel {
+  background: linear-gradient(155deg, #144e46 0%, #0e3731 100%);
+  border-color: rgba(236, 208, 155, 0.42);
+  color: #f5f2eb;
+  box-shadow: 0 24px 48px -22px rgba(14, 55, 49, 0.42);
+}
+
+#outcomes .author-top {
+  border-bottom-color: rgba(236, 208, 155, 0.22);
+}
+
+#outcomes .author-photo {
+  background: #1b5950;
+  border: 1.5px solid rgba(236, 208, 155, 0.55);
+}
+
+#outcomes .author-quote {
+  color: #ecd09b;
+}
+
+#outcomes .author-top h3 {
+  color: #ffffff;
+}
+
+#outcomes .author-facts li {
+  color: #d6e3df;
+}
+
+#outcomes .author-facts li::before {
+  background: #ecd09b;
+}
+
+#outcomes .author-facts strong {
+  color: #ffffff;
+}
+
+#outcomes .stat-cell {
+  border-right-color: rgba(236, 208, 155, 0.22);
+  background: rgba(10, 38, 33, 0.28);
+}
+
+#outcomes .stat-v {
+  color: #ecd09b;
+}
+
+#outcomes .stat-l {
+  color: #cfe0dc;
+}
+
+@media (max-width: 680px) {
+  #outcomes .author-stats .stat-cell:nth-child(-n+2) {
+    border-bottom-color: rgba(236, 208, 155, 0.22);
+  }
+}
+
+/* 5. Мягкая изумрудная тонировка секции отзывов (Секция 04) */
+#reviews {
+  background: #e9f0ed;
+  border-top: 1px solid rgba(20, 78, 70, 0.12);
+  border-bottom: 1px solid rgba(20, 78, 70, 0.12);
+}
+
+#reviews .rev-card {
+  border-color: rgba(20, 78, 70, 0.16);
+}
+
+/* 6. Благородный глубокий изумрудный финал (Подвал) */
+.site-footer {
+  background: #103933;
+  color: #cfe0dc;
+  border-top: 1px solid rgba(236, 208, 155, 0.28);
+}
+
+.site-footer .footer-grid b {
+  color: #ecd09b;
+}
+
+.site-footer .footer-links a {
+  color: #edf4f2;
+}
+
+.site-footer .footer-links a:hover {
+  color: #ecd09b;
+}
+
+.site-footer .footer-bottom {
+  border-top-color: rgba(236, 208, 155, 0.2);
+  color: #b7ccc7;
+}
+
+.site-footer .footer-legal-note {
+  color: #9cb5af;
+}

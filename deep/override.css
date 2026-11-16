@@ -1,0 +1,275 @@
+/* Вариант «Насыщенный Изумруд × Шампань» — выразительный цветовой ритм до самого низа */
+
+.theme-pill {
+  text-decoration: none;
+}
+
+/* 1. Насыщенная изумрудная бегущая строка */
+.ticker {
+  background: #144e46;
+  border-top-color: rgba(236, 208, 155, 0.34);
+  border-bottom-color: rgba(236, 208, 155, 0.34);
+}
+
+.ticker-item {
+  color: #faf7f0;
+}
+
+.ticker-sep {
+  color: #ecd09b;
+}
+
+/* 2. Секция 01: глубокая изумрудная полоса «Это пространство для тех, кто:» */
+#audience .aud-card {
+  border-color: rgba(20, 78, 70, 0.22);
+}
+
+#audience .audience-for-strip {
+  background: linear-gradient(145deg, #144e46 0%, #0f3b35 100%);
+  border-color: rgba(236, 208, 155, 0.38);
+}
+
+#audience .audience-for-title {
+  color: #ecd09b;
+}
+
+#audience .audience-for-item {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(236, 208, 155, 0.28);
+  color: #f5f3ec;
+}
+
+/* 3. Секция 02: тёпло-шалфейный фон + Встреча 04 в шампань-золоте + изумрудный Follow-up */
+#program {
+  background: #e9f0ed;
+  border-top: 1px solid rgba(20, 78, 70, 0.1);
+  border-bottom: 1px solid rgba(20, 78, 70, 0.1);
+}
+
+#program .steps-grid {
+  border-color: rgba(20, 78, 70, 0.2);
+}
+
+#program .step-cell:last-child {
+  background: #f8efd9;
+}
+
+#program .step-cell:last-child .step-kicker-num {
+  color: #6d4d13;
+}
+
+#program .followup-strip {
+  background: linear-gradient(135deg, #144e46 0%, #0d332e 100%);
+  border-color: rgba(236, 208, 155, 0.4);
+  color: #d9e6e2;
+}
+
+#program .followup-strip b {
+  color: #ecd09b;
+}
+
+#program .followup-strip .btn-dark {
+  background: #ecd09b;
+  color: #102a25;
+  border-color: #ecd09b;
+}
+
+#program .followup-strip .btn-dark:hover {
+  background: #f3dfb5;
+  border-color: #f3dfb5;
+  color: #102a25;
+}
+
+/* 4. Секция 03: биография Елены Витчак — глубокий изумруд + шампань */
+#outcomes .checklist {
+  border-color: rgba(20, 78, 70, 0.2);
+}
+
+#outcomes .author-panel {
+  background: linear-gradient(155deg, #144e46 0%, #0d342e 100%);
+  border-color: rgba(236, 208, 155, 0.45);
+  color: #f5f2eb;
+  box-shadow: 0 26px 52px -22px rgba(14, 55, 49, 0.46);
+}
+
+#outcomes .author-top {
+  border-bottom-color: rgba(236, 208, 155, 0.24);
+}
+
+#outcomes .author-photo {
+  background: #1b5950;
+  border: 1.5px solid rgba(236, 208, 155, 0.58);
+}
+
+#outcomes .author-quote {
+  color: #ecd09b;
+}
+
+#outcomes .author-top h3 {
+  color: #ffffff;
+}
+
+#outcomes .author-facts li {
+  color: #d8e4e0;
+}
+
+#outcomes .author-facts li::before {
+  background: #ecd09b;
+}
+
+#outcomes .author-facts strong {
+  color: #ffffff;
+}
+
+#outcomes .stat-cell {
+  border-right-color: rgba(236, 208, 155, 0.24);
+  background: rgba(9, 34, 30, 0.34);
+}
+
+#outcomes .stat-v {
+  color: #ecd09b;
+}
+
+#outcomes .stat-l {
+  color: #d0e1dd;
+}
+
+@media (max-width: 680px) {
+  #outcomes .author-stats .stat-cell:nth-child(-n+2) {
+    border-bottom-color: rgba(236, 208, 155, 0.24);
+  }
+}
+
+/* 5. Секция 04 (Отзывы) — полностью глубокий изумруд + светлые карточки отзывов */
+#reviews {
+  background: linear-gradient(180deg, #144e46 0%, #0f3a34 100%);
+  color: #f7f4ed;
+}
+
+#reviews .sec-num {
+  color: #ecd09b;
+}
+
+#reviews h2 {
+  color: #ffffff;
+}
+
+#reviews .sec-sub {
+  color: #d3e2de;
+}
+
+#reviews .rev-card {
+  background: #fbf9f4;
+  border-color: rgba(236, 208, 155, 0.45);
+  box-shadow: 0 22px 44px -20px rgba(7, 25, 22, 0.5);
+}
+
+/* 6. Секция 05: Золотой шампань слева + Изумрудная форма заявки справа */
+#pricing .form-card {
+  background: linear-gradient(160deg, #144e46 0%, #0e3832 100%);
+  border-color: rgba(236, 208, 155, 0.44);
+  color: #f5f2eb;
+}
+
+#pricing .form-card h3 {
+  color: #ffffff;
+}
+
+#pricing .form-card .form-desc {
+  color: #d3e2de;
+}
+
+#pricing .form-card .payer-pill {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #dce7e4;
+}
+
+#pricing .form-card .payer-pill.is-active {
+  background: #ecd09b;
+  border-color: #ecd09b;
+  color: #102a25;
+}
+
+#pricing .form-card .field label {
+  color: #eef4f2;
+}
+
+#pricing .form-card .field input,
+#pricing .form-card .field textarea {
+  background: #ffffff;
+  border-color: rgba(236, 208, 155, 0.45);
+  color: #141918;
+}
+
+#pricing .form-card .field input:focus,
+#pricing .form-card .field textarea:focus {
+  border-color: #ecd09b;
+  box-shadow: 0 0 0 3px rgba(236, 208, 155, 0.25);
+}
+
+#pricing .form-card .consent-row {
+  color: #d2e0dc;
+}
+
+#pricing .form-card .consent-row input[type="checkbox"] {
+  accent-color: #ecd09b;
+}
+
+#pricing .form-card .consent-row a {
+  color: #ecd09b;
+}
+
+#pricing .form-card #submitLeadBtn {
+  background: #ecd09b;
+  border-color: #ecd09b;
+  color: #102a25;
+}
+
+#pricing .form-card #submitLeadBtn:hover {
+  background: #f4e2bc;
+  border-color: #f4e2bc;
+}
+
+#pricing .form-card .channel-links a {
+  color: #ecd09b;
+  border-bottom-color: rgba(236, 208, 155, 0.4);
+}
+
+#pricing .form-card .form-feedback {
+  background: rgba(10, 34, 30, 0.72);
+  border-color: rgba(236, 208, 155, 0.42);
+  color: #f4f1ea;
+}
+
+#pricing .form-card .form-feedback a {
+  color: #ecd09b;
+}
+
+/* 7. Глубокий изумрудный финал (Подвал) */
+.site-footer {
+  background: #0d2f2a;
+  color: #cfe0dc;
+  border-top: 1px solid rgba(236, 208, 155, 0.3);
+}
+
+.site-footer .footer-grid b {
+  color: #ecd09b;
+}
+
+.site-footer .footer-links a {
+  color: #edf4f2;
+}
+
+.site-footer .footer-links a:hover {
+  color: #ecd09b;
+}
+
+.site-footer .footer-bottom {
+  border-top-color: rgba(236, 208, 155, 0.22);
+  color: #b7ccc7;
+}
+
+.site-footer .footer-legal-note {
+  color: #9bb3ad;
+}
