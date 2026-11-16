@@ -11,7 +11,7 @@
     whatsappPhone: '79851010777',
     telegramHandle: 'alvitcha',
     b2bEmail: 'hr.retrit@yandex.ru',
-    yookassaUrl: 'https://yookassa.ru/my/i/ai_qNXLO-eTd/l',
+    yookassaUrl: '', // Временно скрыта устаревшая ссылка (старая сумма 39 000 ₽ и старое название); подставить новую на 50 000 / 59 000 ₽ от бухгалтера
     streamLabel: 'HR-ретрит · 4-й запуск (14 января – 4 февраля)',
     earlyPriceRub: 50000,
     standardPriceRub: 59000,
@@ -460,7 +460,7 @@
           <a href="${tgHref}" target="_blank" rel="noopener noreferrer" style="font-weight:700;text-decoration:underline;">Получить ссылку в Telegram →</a>
           <a href="${mailHref}" style="font-weight:700;text-decoration:underline;">Отправить на Email →</a>
           <a href="${waHref}" target="_blank" rel="noopener noreferrer" style="font-weight:700;text-decoration:underline;">WhatsApp* →</a>
-          ${payerMode === 'b2c' ? `<a href="${ANALYTICS_CONFIG.yookassaUrl}" target="_blank" rel="noopener noreferrer" style="font-weight:600;text-decoration:underline;">${yookassaLabel}</a>` : ''}
+          ${payerMode === 'b2c' && ANALYTICS_CONFIG.yookassaUrl ? `<a href="${ANALYTICS_CONFIG.yookassaUrl}" target="_blank" rel="noopener noreferrer" style="font-weight:600;text-decoration:underline;">${yookassaLabel}</a>` : ''}
           <button type="button" class="copy-email-btn" id="copyLeadBtn">Скопировать текст заявки</button>
         </span>
       `);

@@ -1475,16 +1475,18 @@ section, [id] {
 
 .author-top {
   display: grid;
-  grid-template-columns: 204px minmax(0, 1fr);
-  gap: 22px;
-  padding: 22px;
+  grid-template-columns: 212px minmax(0, 1fr);
+  gap: 24px;
+  padding: 26px;
   align-items: center;
+  flex: 1;
   border-bottom: 1px solid var(--line);
 }
 
 .author-photo {
-  width: 204px;
-  height: 244px;
+  width: 212px;
+  height: 100%;
+  min-height: 276px;
   background: var(--photo-surface);
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
@@ -1564,9 +1566,12 @@ section, [id] {
 }
 
 .stat-cell {
-  padding: 16px 14px;
+  padding: 22px 14px;
   border-right: 1px solid var(--line);
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .stat-cell:last-child {
