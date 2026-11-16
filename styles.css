@@ -2167,6 +2167,19 @@ section, [id] {
   line-height: 1.55;
 }
 
+.faq-ans p {
+  margin: 0 0 10px;
+}
+
+.faq-ans p:last-child {
+  margin-bottom: 0;
+}
+
+.faq-ans strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
 /* ==========================================================================
    Footer
    ========================================================================== */
