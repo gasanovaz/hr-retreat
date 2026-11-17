@@ -129,11 +129,11 @@ $sendSmtpSsl = static function (
             'peer_name' => $host,
         ],
     ]);
-    $sock = @stream_socket_client("ssl://{$host}:{$port}", $errno, $errstr, 8, STREAM_CLIENT_CONNECT, $ctx);
+    $sock = @stream_socket_client("ssl://{$host}:{$port}", $errno, $errstr, 4, STREAM_CLIENT_CONNECT, $ctx);
     if (!$sock) {
         return false;
     }
-    stream_set_timeout($sock, 8);
+    stream_set_timeout($sock, 4);
 
     $readResp = static function ($fp): array {
         $lines = '';
@@ -186,7 +186,8 @@ $sendSmtpSsl = static function (
         }
 
         $fromName = '=?UTF-8?B?' . base64_encode('Школа Елены Витчак') . '?=';
-        $msgId = '<' . bin2hex(random_bytes(8)) . '@evitchak.ru>';
+        $userDomain = (strpos($user, '@') !== false) ? substr(strrchr($user, '@'), 1) : 'evitchak.ru';
+        $msgId = '<' . bin2hex(random_bytes(8)) . '@' . $userDomain . '>';
         $headers = [
             "Date: " . date('r'),
             "From: {$fromName} <{$user}>",
@@ -224,11 +225,12 @@ $mailSent = $sendSmtpSsl(
 if ($mailSent) {
     $mailMethod = 'smtp';
 } else {
-    $fallbackHeaders = "From: =?UTF-8?B?" . base64_encode('Школа Елены Витчак') . "?= <no-reply@evitchak.ru>\r\n"
+    $fallbackFrom = !empty($smtpConfig['user']) ? (string)$smtpConfig['user'] : 'no-reply@evitchak.com';
+    $fallbackHeaders = "From: =?UTF-8?B?" . base64_encode('Школа Елены Витчак') . "?= <{$fallbackFrom}>\r\n"
         . ($emailValid !== '' ? "Reply-To: {$emailValid}\r\n" : '')
         . "MIME-Version: 1.0\r\n"
         . "Content-Type: text/plain; charset=utf-8\r\n";
-    $mailSent = @mail((string)$smtpConfig['to'], $subjectEncoded, implode("\n", $bodyLines), $fallbackHeaders);
+    $mailSent = @mail((string)$smtpConfig['to'], $subjectEncoded, $bodyText, $fallbackHeaders, "-f{$fallbackFrom}");
     if ($mailSent) {
         $mailMethod = 'sendmail';
     }

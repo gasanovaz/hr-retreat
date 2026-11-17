@@ -4,14 +4,24 @@ ErrorDocument 404 /404.html
 
 <IfModule mod_rewrite.c>
   RewriteEngine On
+  RewriteBase /
 
-  # 1. Единое каноническое зеркало https://evitchak.ru/ (редирект с http, www и evitchak.com)
-  RewriteCond %{HTTPS} !=on [OR]
+  # 1. Запрет прямого доступа к служебным папкам (до редиректов)
+  RewriteRule ^(\.git|api/\.leads_storage)(/|$) - [F,L]
+
+  # 2. Пропускаем ACME-валидацию Let's Encrypt и технический домен без редиректа
+  RewriteRule ^\.well-known/ - [L]
+  RewriteCond %{HTTP_HOST} ^cz941184\.tw1\.ru$ [NC]
+  RewriteRule ^ - [L]
+
+  # 3. Сохраняем POST-запросы формы с ранее открытых вкладок evitchak.com (301 превратил бы POST в GET)
+  RewriteCond %{REQUEST_METHOD} ^POST$ [NC]
+  RewriteRule ^api/ - [L]
+
+  # 4. Единое каноническое зеркало https://evitchak.ru/ (Timeweb nginx ставит X-HTTPS: 1)
+  RewriteCond %{HTTP:X-HTTPS} !^1$ [OR]
   RewriteCond %{HTTP_HOST} !^evitchak\.ru$ [NC]
   RewriteRule ^(.*)$ https://evitchak.ru/$1 [R=301,L]
-
-  # 2. Запрет прямого доступа к служебным папкам и скрытым файлам (кроме .well-known для SSL)
-  RewriteRule ^(\.git|api/\.leads_storage)(/|$) - [F,L]
 </IfModule>
 
 <FilesMatch "(^\.ht|\.(jsonl|log|sh|md|bak)$)">
