@@ -11,7 +11,8 @@
     whatsappPhone: '79256697377',
     telegramHandle: 'alvitcha',
     b2bEmail: 'hr.retrit@yandex.ru',
-    yookassaUrl: '', // Временно скрыта устаревшая ссылка (старая сумма 39 000 ₽ и старое название); подставить новую на 50 000 / 59 000 ₽ от бухгалтера
+    yookassaUrl: '', // Опциональная прямая ссылка ЮKassa (автоматически приоритетнее серверный /api/create-payment.php при подключённых ключах)
+    robokassaUrl: '', // Опциональная прямая ссылка Робокассы
     streamLabel: 'HR-ретрит · 4-й запуск (14 января – 4 февраля)',
     earlyPriceRub: 50000,
     standardPriceRub: 59000,
@@ -434,6 +435,8 @@
       const waHref = `https://wa.me/${ANALYTICS_CONFIG.whatsappPhone}?text=${encodedText}`;
 
       let serverDelivered = false;
+      let leadId = '';
+      let apiPay = {};
       const webhookUrl = getWebhookEndpoint();
       if (webhookUrl) {
         if (submitLeadBtn) submitLeadBtn.disabled = true;
@@ -449,6 +452,8 @@
           clearTimeout(timer);
           const data = await resp.json().catch(() => null);
           serverDelivered = Boolean(resp.ok && data && data.ok === true);
+          if (data && typeof data.leadId === 'string') leadId = data.leadId;
+          if (data && data.payments && typeof data.payments === 'object') apiPay = data.payments;
         } catch (_) {
           serverDelivered = false;
         } finally {
@@ -456,24 +461,85 @@
         }
       }
 
+      const leadTag = leadId ? ` № ${escapeHtml(leadId)}` : '';
       const headerNote = serverDelivered
-        ? `<strong>Заявка для ${escapeHtml(name)} принята (цена ${activePriceLabel}).</strong><br>Доступны также быстрые действия:`
+        ? `<strong>Заявка${leadTag} для ${escapeHtml(name)} принята (цена ${activePriceLabel}).</strong><br>${
+            payerMode === 'b2c' && (apiPay.yookassa || apiPay.robokassa)
+              ? 'Перейдите к онлайн-оплате или выберите удобный способ связи:'
+              : 'Доступны также быстрые действия:'
+          }`
         : `<strong>Заявка сформирована для ${escapeHtml(name)} (цена ${activePriceLabel}).</strong><br>Отправьте заявку в удобный мессенджер — бухгалтер направит прямую ссылку на оплату от ИП или счёт B2B:`;
 
       const yookassaLabel = earlyActive
-        ? 'Полный тариф 59 000 ₽ в ЮKassa →'
-        : 'Оплата 59 000 ₽ онлайн в ЮKassa →';
+        ? `Оплатить ${activePriceLabel} в ЮKassa (ранняя цена) →`
+        : `Оплатить ${activePriceLabel} онлайн в ЮKassa →`;
+      const robokassaLabel = earlyActive
+        ? `Оплатить ${activePriceLabel} в Робокассе (ранняя цена) →`
+        : `Оплатить ${activePriceLabel} онлайн в Робокассе →`;
+
+      const apiPayButtons = (payerMode === 'b2c' && leadId && (apiPay.yookassa || apiPay.robokassa))
+        ? `<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;">
+            ${apiPay.yookassa ? `<button type="button" class="btn btn-teal btn-sm" data-pay-provider="yookassa">Оплатить ${activePriceLabel} · ЮKassa →</button>` : ''}
+            ${apiPay.robokassa ? `<button type="button" class="btn btn-outline btn-sm" data-pay-provider="robokassa">Оплатить ${activePriceLabel} · Робокасса →</button>` : ''}
+          </div>
+          <div id="payApiError" style="margin-top:8px;font-size:13px;color:#8b261d;font-weight:600;" hidden></div>`
+        : '';
+
+      const fallbackPayLinks = (!apiPay.yookassa && payerMode === 'b2c' && ANALYTICS_CONFIG.yookassaUrl
+        ? `<a href="${ANALYTICS_CONFIG.yookassaUrl}" target="_blank" rel="noopener noreferrer" style="font-weight:600;text-decoration:underline;">${yookassaLabel}</a>`
+        : '') + (!apiPay.robokassa && payerMode === 'b2c' && ANALYTICS_CONFIG.robokassaUrl
+        ? `<a href="${ANALYTICS_CONFIG.robokassaUrl}" target="_blank" rel="noopener noreferrer" style="font-weight:600;text-decoration:underline;">${robokassaLabel}</a>`
+        : '');
 
       showFeedbackHtml(`
-        ${headerNote}<br>
+        ${headerNote}
+        ${apiPayButtons}<br>
         <span style="display:inline-flex;flex-wrap:wrap;gap:8px 14px;margin-top:8px;">
           <a href="${tgHref}" target="_blank" rel="noopener noreferrer" style="font-weight:700;text-decoration:underline;">Получить ссылку в Telegram →</a>
           <a href="${mailHref}" style="font-weight:700;text-decoration:underline;">Отправить на Email →</a>
           <a href="${waHref}" target="_blank" rel="noopener noreferrer" style="font-weight:700;text-decoration:underline;">WhatsApp* →</a>
-          ${payerMode === 'b2c' && ANALYTICS_CONFIG.yookassaUrl ? `<a href="${ANALYTICS_CONFIG.yookassaUrl}" target="_blank" rel="noopener noreferrer" style="font-weight:600;text-decoration:underline;">${yookassaLabel}</a>` : ''}
+          ${fallbackPayLinks}
           <button type="button" class="copy-email-btn" id="copyLeadBtn">Скопировать текст заявки</button>
         </span>
       `);
+
+      feedback.querySelectorAll('[data-pay-provider]').forEach((payBtn) => {
+        payBtn.addEventListener('click', async () => {
+          const provider = payBtn.getAttribute('data-pay-provider') || '';
+          const payErr = document.getElementById('payApiError');
+          if (payErr) { payErr.hidden = true; payErr.textContent = ''; }
+          payBtn.disabled = true;
+          try {
+            const createUrl = webhookUrl.replace(/hr-retreat-lead\.php$/, 'create-payment.php');
+            const currentEmail = (leadEmail?.value || email || '').trim();
+            const payResp = await fetch(createUrl, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ leadId, provider, email: currentEmail }),
+            });
+            const payData = await payResp.json().catch(() => null);
+            if (payResp.ok && payData && payData.ok && payData.confirmationUrl) {
+              trackEvent('payment_redirect', { provider, leadId, priceRub: activePriceRub });
+              window.location.assign(payData.confirmationUrl);
+              return;
+            }
+            if (payData && payData.needEmail && leadEmail) {
+              leadEmail.focus();
+            }
+            if (payErr) {
+              payErr.textContent = (payData && payData.error) || 'Не удалось создать платёж. Попробуйте другой способ или напишите куратору.';
+              payErr.hidden = false;
+            }
+          } catch (_) {
+            if (payErr) {
+              payErr.textContent = 'Ошибка соединения при переходе к оплате. Попробуйте снова.';
+              payErr.hidden = false;
+            }
+          } finally {
+            payBtn.disabled = false;
+          }
+        });
+      });
 
       const copyLeadBtn = document.getElementById('copyLeadBtn');
       if (copyLeadBtn) {

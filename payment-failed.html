@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0e342e">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Платёж не завершён · HR-ретрит Елены Витчак (evitchak.ru)</title>
+  <meta name="description" content="Платёж отменён или не завершён — повторная попытка оплаты или помощь куратора HR-ретрита Елены Витчак.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23144e46'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='system-ui,sans-serif' font-weight='700' font-size='34' fill='%23ecd09b'%3E%D0%92%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css?v=12">
+  <link rel="stylesheet" href="deep-theme.css?v=4">
+  <style>
+    .status-shell { max-width: 760px; margin: 0 auto; padding: 54px 0 84px; }
+    .status-card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 42px 44px; box-shadow: 0 24px 52px -34px rgba(14, 56, 50, 0.28); }
+    .status-badge { display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px; border-radius: 999px; background: rgba(180, 120, 42, 0.12); color: #7a4c11; font-size: 13px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 16px; }
+    .status-card h1 { font-size: clamp(28px, 4vw, 38px); line-height: 1.14; color: var(--teal-dark); margin-bottom: 14px; }
+    .status-lead { font-size: 16.5px; line-height: 1.62; color: var(--ink); margin-bottom: 22px; }
+    .status-order { display: inline-block; padding: 8px 14px; border-radius: 10px; background: var(--bg-soft); border: 1px solid var(--line); font-size: 14px; font-weight: 600; color: var(--teal-dark); margin-bottom: 22px; }
+    .status-help { background: var(--bg-soft); border: 1px solid var(--line); border-radius: 14px; padding: 20px 24px; margin-bottom: 24px; font-size: 15px; line-height: 1.62; color: var(--ink); }
+    .status-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+    .status-note { margin-top: 22px; font-size: 12.5px; color: var(--ink-muted); line-height: 1.5; }
+    @media (max-width: 680px) { .status-card { padding: 26px 20px; } }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="./" aria-label="Школа Елены Витчак — На главную">
+        <span class="brand-title">Школа Елены Витчак</span>
+        <span class="brand-sub">HR-ретрит · 4-й запуск</span>
+      </a>
+      <a class="btn btn-teal btn-sm" href="./#apply">Повторить заявку</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="status-shell">
+      <article class="status-card">
+        <div class="status-badge">Оплата не завершена</div>
+        <h1>Платёж отменён или не прошёл</h1>
+        <p class="status-lead">
+          Средства не были зачислены на счёт программы. Возможно, операция была отменена вами, сработал лимит карты или временный сбой на стороне банка.
+        </p>
+
+        <div class="status-order" id="orderRefBox" hidden></div>
+
+        <div class="status-help">
+          Вы можете вернуться на сайт и попробовать оплатить снова другой картой или через СБП, либо написать куратору — мы пришлём альтернативную ссылку или выставим счёт для юридического лица (B2B):
+          <br><br>
+          Telegram: <a href="https://t.me/alvitcha" target="_blank" rel="noopener noreferrer">@alvitcha</a> ·
+          Почта: <a href="mailto:hr.retrit@yandex.ru">hr.retrit@yandex.ru</a> ·
+          Телефон / WhatsApp*: <a href="tel:+79256697377">+7 925 669-73-77</a>
+        </div>
+
+        <div class="status-actions">
+          <a class="btn btn-teal" href="./#apply">Вернуться к форме и повторить</a>
+          <a class="btn btn-outline" href="https://t.me/alvitcha" target="_blank" rel="noopener noreferrer">Связаться в Telegram</a>
+        </div>
+
+        <p class="status-note">
+          ИП Витчак Елена Леонидовна · ОГРНИП 325774600726740 · ИНН 616503753678.<br>
+          *Мессенджер WhatsApp принадлежит корпорации Meta Platforms Inc., деятельность которой признана экстремистской и запрещена на территории РФ.
+        </p>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var rawRef = params.get('lead') || params.get('Shp_lead') || params.get('InvId') || '';
+      var safeRef = rawRef.replace(/[^A-Za-z0-9_-]/g, '').slice(0, 48);
+      var box = document.getElementById('orderRefBox');
+      if (box && safeRef) {
+        box.textContent = 'Номер заявки / заказа: ' + safeRef;
+        box.hidden = false;
+      }
+    })();
+  </script>
+</body>
+</html>

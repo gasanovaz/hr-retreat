@@ -1,5 +1,5 @@
-# Закрываем доступ извне к секретам SMTP/оплат/админки, резервному хранилищу заявок и логам
-<FilesMatch "(^\.|^\.(smtp|payment|admin)_secret\.php$|\.(jsonl|log|txt|bak)$)">
+# Закрываем доступ извне к секретам SMTP/оплат/админки, библиотекам, резервному хранилищу заявок и логам
+<FilesMatch "(^\.|^_.*\.php$|^\.(smtp|payment|admin)_secret\.php$|\.(jsonl|log|txt|bak)$)">
   <IfModule mod_authz_core.c>
     Require all denied
   </IfModule>
