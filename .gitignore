@@ -1,0 +1,3 @@
+api/.smtp_secret.php
+api/.leads_storage/
+.DS_Store

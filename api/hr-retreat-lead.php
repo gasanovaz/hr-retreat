@@ -1,8 +1,9 @@
 <?php
 /**
  * HR Ретрит · Школа Елены Витчак
- * Серверный обработчик заявок для размещения на российском хостинге evitchak.ru (152-ФЗ).
- * Активируется автоматически на боевом домене (ANALYTICS_CONFIG.webhookEndpoint = '/api/hr-retreat-lead.php').
+ * Серверный обработчик заявок для размещения на российском хостинге Timeweb (152-ФЗ).
+ * Отправляет уведомление на hr.retrit@yandex.ru через авторизованный SMTP Timeweb (ssl://smtp.timeweb.ru:465)
+ * с fallback на mail(), и сохраняет резервную копию лида в защищённый JSONL-журнал.
  */
 declare(strict_types=1);
 
@@ -18,7 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $raw = file_get_contents('php://input');
 $data = json_decode($raw ?: '{}', true);
 if (!is_array($data)) {
-    // Поддержка стандартного form POST fallback
     $data = $_POST;
 }
 
@@ -60,7 +60,8 @@ $utmText = json_encode($utm, JSON_UNESCAPED_UNICODE);
 $ymClientId = $cleanSingleLine($data['ymClientId'] ?? ($data['ym_client_id'] ?? ''));
 $pageUrl = $cleanSingleLine($data['pageUrl'] ?? ($data['page_url'] ?? ''));
 
-$subject = '=?UTF-8?B?' . base64_encode("Заявка HR-ретрит ({$modeLabel}) — {$name}") . '?=';
+$subjectRaw = "Заявка HR-ретрит ({$modeLabel}) — {$name}";
+$subjectEncoded = '=?UTF-8?B?' . base64_encode($subjectRaw) . '?=';
 $bodyLines = [
     'Новая заявка с лендинга «HR-ретрит: следующий уровень»',
     "Режим оплаты: {$modeLabel}",
@@ -87,51 +88,199 @@ if ($pageUrl !== '') {
     $bodyLines[] = "URL: {$pageUrl}";
 }
 $bodyLines[] = 'Дата (МСК): ' . $mskNow->format('Y-m-d H:i:s');
+$bodyText = implode("\r\n", $bodyLines);
 
-$headers = "From: Школа Елены Витчак <no-reply@evitchak.ru>\r\n"
-    . ($emailValid !== '' ? "Reply-To: {$emailValid}\r\n" : '')
-    . "MIME-Version: 1.0\r\n"
-    . "Content-Type: text/plain; charset=utf-8\r\n";
-
-$mailSent = @mail('hr.retrit@yandex.ru', $subject, implode("\n", $bodyLines), $headers);
-
-// Локальный резервный журнал вне публичной корневой директории webroot (или в защищённом api/.leads_storage)
-$logDir = dirname(__DIR__, 2) . '/private_leads';
-if (!is_dir($logDir)) {
-    @mkdir($logDir, 0750, true);
-}
-if (!is_dir($logDir) || !is_writable($logDir)) {
-    $logDir = __DIR__ . '/.leads_storage';
-    if (!is_dir($logDir)) {
-        @mkdir($logDir, 0750, true);
+// Читаем пароль SMTP из переменной окружения или закрытого файла .smtp_secret.php
+$smtpConfig = [
+    'host' => 'smtp.timeweb.ru',
+    'port' => 465,
+    'user' => 'no-reply@evitchak.ru',
+    'pass' => getenv('TIMEWEB_SMTP_PASS') ?: '',
+    'to'   => 'hr.retrit@yandex.ru',
+];
+$secretFile = __DIR__ . '/.smtp_secret.php';
+if (is_file($secretFile)) {
+    $loaded = @include $secretFile;
+    if (is_array($loaded)) {
+        $smtpConfig = array_merge($smtpConfig, $loaded);
     }
 }
+
+/**
+ * Минимальный нативный SMTP over SSL (port 465) клиент без внешних зависимостей.
+ */
+$sendSmtpSsl = static function (
+    string $host,
+    int $port,
+    string $user,
+    string $pass,
+    string $to,
+    string $replyTo,
+    string $subjectHeader,
+    string $body
+): bool {
+    if ($pass === '') {
+        return false;
+    }
+    $ctx = stream_context_create([
+        'ssl' => [
+            'verify_peer' => true,
+            'verify_peer_name' => true,
+            'peer_name' => $host,
+        ],
+    ]);
+    $sock = @stream_socket_client("ssl://{$host}:{$port}", $errno, $errstr, 8, STREAM_CLIENT_CONNECT, $ctx);
+    if (!$sock) {
+        return false;
+    }
+    stream_set_timeout($sock, 8);
+
+    $readResp = static function ($fp): array {
+        $lines = '';
+        $code = 0;
+        while (!feof($fp)) {
+            $line = fgets($fp, 512);
+            if ($line === false) {
+                break;
+            }
+            $lines .= $line;
+            if (strlen($line) >= 4 && $line[3] === ' ') {
+                $code = (int)substr($line, 0, 3);
+                break;
+            }
+        }
+        return [$code, $lines];
+    };
+    $cmd = static function ($fp, string $command, int $expected) use ($readResp): bool {
+        fwrite($fp, $command . "\r\n");
+        [$code] = $readResp($fp);
+        return $code === $expected;
+    };
+
+    try {
+        [$greet] = $readResp($sock);
+        if ($greet !== 220) {
+            return false;
+        }
+        $ehloHost = preg_replace('/[^a-zA-Z0-9.-]/', '', (string)($_SERVER['HTTP_HOST'] ?? 'evitchak.com')) ?: 'evitchak.com';
+        if (!$cmd($sock, "EHLO {$ehloHost}", 250)) {
+            return false;
+        }
+        if (!$cmd($sock, 'AUTH LOGIN', 334)) {
+            return false;
+        }
+        if (!$cmd($sock, base64_encode($user), 334)) {
+            return false;
+        }
+        if (!$cmd($sock, base64_encode($pass), 235)) {
+            return false;
+        }
+        if (!$cmd($sock, "MAIL FROM:<{$user}>", 250)) {
+            return false;
+        }
+        if (!$cmd($sock, "RCPT TO:<{$to}>", 250)) {
+            return false;
+        }
+        if (!$cmd($sock, 'DATA', 354)) {
+            return false;
+        }
+
+        $fromName = '=?UTF-8?B?' . base64_encode('Школа Елены Витчак') . '?=';
+        $msgId = '<' . bin2hex(random_bytes(8)) . '@evitchak.ru>';
+        $headers = [
+            "Date: " . date('r'),
+            "From: {$fromName} <{$user}>",
+            "To: <{$to}>",
+            "Subject: {$subjectHeader}",
+            "Message-ID: {$msgId}",
+            "MIME-Version: 1.0",
+            "Content-Type: text/plain; charset=UTF-8",
+            "Content-Transfer-Encoding: base64",
+        ];
+        if ($replyTo !== '') {
+            $headers[] = "Reply-To: <{$replyTo}>";
+        }
+        $payload = implode("\r\n", $headers) . "\r\n\r\n" . chunk_split(base64_encode($body)) . "\r\n.";
+        fwrite($sock, $payload . "\r\n");
+        [$dataCode] = $readResp($sock);
+        @fwrite($sock, "QUIT\r\n");
+        return $dataCode === 250;
+    } finally {
+        @fclose($sock);
+    }
+};
+
+$mailMethod = 'none';
+$mailSent = $sendSmtpSsl(
+    (string)$smtpConfig['host'],
+    (int)$smtpConfig['port'],
+    (string)$smtpConfig['user'],
+    (string)$smtpConfig['pass'],
+    (string)$smtpConfig['to'],
+    $emailValid,
+    $subjectEncoded,
+    $bodyText
+);
+if ($mailSent) {
+    $mailMethod = 'smtp';
+} else {
+    $fallbackHeaders = "From: =?UTF-8?B?" . base64_encode('Школа Елены Витчак') . "?= <no-reply@evitchak.ru>\r\n"
+        . ($emailValid !== '' ? "Reply-To: {$emailValid}\r\n" : '')
+        . "MIME-Version: 1.0\r\n"
+        . "Content-Type: text/plain; charset=utf-8\r\n";
+    $mailSent = @mail((string)$smtpConfig['to'], $subjectEncoded, implode("\n", $bodyLines), $fallbackHeaders);
+    if ($mailSent) {
+        $mailMethod = 'sendmail';
+    }
+}
+
+// Надёжный резервный JSONL-журнал (сначала вне webroot, затем в закрытой api/.leads_storage)
+$record = [
+    'ts' => $mskNow->format(DATE_ATOM),
+    'host' => (string)($_SERVER['HTTP_HOST'] ?? ''),
+    'mode' => $payerType,
+    'priceRub' => $activePrice,
+    'name' => $name,
+    'contact' => $contact,
+    'email' => $emailRaw,
+    'company' => $company,
+    'comment' => $comment,
+    'pdnConsent' => $pdnConsent,
+    'offerConsent' => $offerConsent,
+    'marketingConsent' => $promoConsent,
+    'ymClientId' => $ymClientId,
+    'utm' => $utm,
+    'mailSent' => $mailSent,
+    'mailMethod' => $mailMethod,
+];
+$jsonLine = json_encode($record, JSON_UNESCAPED_UNICODE) . PHP_EOL;
+
+$candidateDirs = [
+    dirname(__DIR__, 2) . '/private_leads',
+    __DIR__ . '/.leads_storage',
+    rtrim(sys_get_temp_dir(), '/\\') . '/evitchak_leads',
+];
 $logged = false;
-if (is_dir($logDir) && is_writable($logDir)) {
-    $record = [
-        'ts' => $mskNow->format(DATE_ATOM),
-        'mode' => $payerType,
-        'priceRub' => $activePrice,
-        'name' => $name,
-        'contact' => $contact,
-        'email' => $emailRaw,
-        'company' => $company,
-        'comment' => $comment,
-        'pdnConsent' => $pdnConsent,
-        'offerConsent' => $offerConsent,
-        'marketingConsent' => $promoConsent,
-        'ymClientId' => $ymClientId,
-        'utm' => $utm,
-    ];
-    $logged = (bool)file_put_contents(
-        $logDir . '/hr_retreat_leads.jsonl',
-        json_encode($record, JSON_UNESCAPED_UNICODE) . PHP_EOL,
-        FILE_APPEND | LOCK_EX
-    );
+$logLocation = '';
+foreach ($candidateDirs as $dir) {
+    if (!is_dir($dir)) {
+        @mkdir($dir, 0750, true);
+    }
+    if (is_dir($dir)) {
+        $written = @file_put_contents($dir . '/hr_retreat_leads.jsonl', $jsonLine, FILE_APPEND | LOCK_EX);
+        if ($written !== false && $written > 0) {
+            $logged = true;
+            $logLocation = basename($dir);
+            break;
+        }
+    }
 }
 
 echo json_encode([
     'ok' => ($mailSent || $logged),
     'priceRub' => $activePrice,
     'mailSent' => $mailSent,
+    'mailMethod' => $mailMethod,
+    'logged' => $logged,
+    'logLocation' => $logLocation,
 ], JSON_UNESCAPED_UNICODE);

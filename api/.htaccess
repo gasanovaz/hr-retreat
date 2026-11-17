@@ -1,5 +1,5 @@
-# Закрываем доступ извне к резервному хранилищу заявок и логам
-<FilesMatch "\.(jsonl|log|txt|bak)$">
+# Закрываем доступ извне к секретам SMTP, резервному хранилищу заявок и логам
+<FilesMatch "(^\.|^\.smtp_secret\.php$|\.(jsonl|log|txt|bak)$)">
   <IfModule mod_authz_core.c>
     Require all denied
   </IfModule>
