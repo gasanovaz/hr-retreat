@@ -1,0 +1,13 @@
+# Закрытый предпросмотр показательного сайта (строго запрещена индексация поисковиками)
+DirectoryIndex index.html
+Options -Indexes
+
+<IfModule mod_headers.c>
+  Header always set X-Robots-Tag "noindex, nofollow, noarchive"
+</IfModule>
+
+<FilesMatch "\.(html)$">
+  <IfModule mod_headers.c>
+    Header set Cache-Control "no-cache, must-revalidate"
+  </IfModule>
+</FilesMatch>
