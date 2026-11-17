@@ -29,6 +29,7 @@
     if (!burgerBtn || !mobileNav) return;
     burgerBtn.setAttribute('aria-expanded', String(open));
     mobileNav.hidden = !open;
+    mobileNav.classList.toggle('is-open', open);
     if (open) mobileNav.removeAttribute('inert');
     else mobileNav.setAttribute('inert', '');
   };
