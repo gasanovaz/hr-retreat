@@ -418,7 +418,7 @@ $payCfg = ev_load_payment_config();
         <span class="brand-sub">Кабинет заявок · evitchak.ru</span>
       </a>
       <div class="adm-actions">
-        <a class="btn btn-outline btn-sm" href="../">Открыть сайт</a>
+        <a class="btn btn-teal btn-sm" href="../">Открыть сайт</a>
         <form method="POST" action="./" style="margin:0;">
           <input type="hidden" name="action" value="logout">
           <input type="hidden" name="csrf" value="<?= $h($_SESSION['csrf']) ?>">
