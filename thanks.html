@@ -59,6 +59,7 @@
 
         <div class="status-actions">
           <a class="btn btn-teal" href="./">Вернуться на страницу программы</a>
+          <button type="button" class="btn btn-dark" id="downloadIcsBtn">Добавить 4 встречи в календарь (.ics)</button>
           <a class="btn btn-outline" href="https://t.me/alvitcha" target="_blank" rel="noopener noreferrer">Написать куратору в Telegram</a>
         </div>
 
@@ -79,6 +80,42 @@
       if (box && safeRef) {
         box.textContent = 'Номер заявки / заказа: ' + safeRef;
         box.hidden = false;
+      }
+
+      var icsBtn = document.getElementById('downloadIcsBtn');
+      if (icsBtn) {
+        icsBtn.addEventListener('click', function () {
+          var sessions = [
+            ['20270114', 'Встреча 1 · Риски и роли будущего'],
+            ['20270121', 'Встреча 2 · Stop-Start-Shift: энергия'],
+            ['20270128', 'Встреча 3 · Влияние и стейкхолдеры'],
+            ['20270204', 'Встреча 4 · Личная стратегия 3-12-36']
+          ];
+          var lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Evitchak//HR Retreat 4//RU', 'CALSCALE:GREGORIAN'];
+          sessions.forEach(function (s, idx) {
+            lines.push(
+              'BEGIN:VEVENT',
+              'UID:hr-retreat-4-s' + (idx + 1) + '@evitchak.ru',
+              'DTSTAMP:20261117T120000Z',
+              'DTSTART:' + s[0] + 'T140000Z',
+              'DTEND:' + s[0] + 'T160000Z',
+              'SUMMARY:HR-ретрит Елены Витчак — ' + s[1],
+              'DESCRIPTION:Онлайн-сессия 17:00-19:00 МСК (ссылка на подключение направляется в чате потока)',
+              'URL:https://evitchak.ru/',
+              'END:VEVENT'
+            );
+          });
+          lines.push('END:VCALENDAR');
+          var blob = new Blob([lines.join('\r\n') + '\r\n'], { type: 'text/calendar;charset=utf-8' });
+          var url = URL.createObjectURL(blob);
+          var a = document.createElement('a');
+          a.href = url;
+          a.download = 'hr-retreat-2027.ics';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+        });
       }
 
       try {
