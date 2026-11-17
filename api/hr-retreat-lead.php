@@ -54,16 +54,22 @@ if ($name === '' || $contact === '' || !$pdnConsent || !$offerConsent) {
 $mskNow = new DateTimeImmutable('now', new DateTimeZone('Europe/Moscow'));
 $earlyDeadline = new DateTimeImmutable('2026-12-23 23:59:59', new DateTimeZone('Europe/Moscow'));
 $activePrice = ($mskNow <= $earlyDeadline) ? 50000 : 59000;
+$leadId = 'HR-' . $mskNow->format('Ymd') . '-' . strtoupper(bin2hex(random_bytes(3)));
+$consentVersion = '2026-11-17';
+$clientIp = $cleanSingleLine($_SERVER['HTTP_X_REAL_IP'] ?? ($_SERVER['REMOTE_ADDR'] ?? ''));
+$userAgentRaw = $cleanSingleLine($_SERVER['HTTP_USER_AGENT'] ?? '');
+$userAgent = function_exists('mb_substr') ? mb_substr($userAgentRaw, 0, 240) : substr($userAgentRaw, 0, 240);
 
 $utm = is_array($data['utm'] ?? null) ? $data['utm'] : [];
 $utmText = json_encode($utm, JSON_UNESCAPED_UNICODE);
 $ymClientId = $cleanSingleLine($data['ymClientId'] ?? ($data['ym_client_id'] ?? ''));
 $pageUrl = $cleanSingleLine($data['pageUrl'] ?? ($data['page_url'] ?? ''));
 
-$subjectRaw = "Заявка HR-ретрит ({$modeLabel}) — {$name}";
+$subjectRaw = "Заявка {$leadId} · HR-ретрит ({$modeLabel}) — {$name}";
 $subjectEncoded = '=?UTF-8?B?' . base64_encode($subjectRaw) . '?=';
 $bodyLines = [
     'Новая заявка с лендинга «HR-ретрит: следующий уровень»',
+    "Номер заявки: {$leadId}",
     "Режим оплаты: {$modeLabel}",
     "Актуальная цена на момент заявки: {$activePrice} ₽",
     "Имя: {$name}",
@@ -76,8 +82,8 @@ if ($payerType === 'b2b') {
 if ($comment !== '') {
     $bodyLines[] = "Комментарий:\n{$comment}";
 }
-$bodyLines[] = 'Согласие ПДн и Оферта: подтверждены';
-$bodyLines[] = 'Согласие на рассылку (необязат.): ' . ($promoConsent ? 'Да' : 'Нет');
+$bodyLines[] = "Согласие ПДн и Оферта (ред. {$consentVersion}): подтверждены";
+$bodyLines[] = 'Согласие на рассылку 38-ФЗ (необязат.): ' . ($promoConsent ? 'Да' : 'Нет');
 if ($ymClientId !== '') {
     $bodyLines[] = "Yandex ClientID: {$ymClientId}";
 }
@@ -162,7 +168,7 @@ $sendSmtpSsl = static function (
         if ($greet !== 220) {
             return false;
         }
-        $ehloHost = preg_replace('/[^a-zA-Z0-9.-]/', '', (string)($_SERVER['HTTP_HOST'] ?? 'evitchak.com')) ?: 'evitchak.com';
+        $ehloHost = preg_replace('/[^a-zA-Z0-9.-]/', '', (string)($_SERVER['HTTP_HOST'] ?? 'evitchak.ru')) ?: 'evitchak.ru';
         if (!$cmd($sock, "EHLO {$ehloHost}", 250)) {
             return false;
         }
@@ -238,6 +244,7 @@ if ($mailSent) {
 
 // Надёжный резервный JSONL-журнал (сначала вне webroot, затем в закрытой api/.leads_storage)
 $record = [
+    'leadId' => $leadId,
     'ts' => $mskNow->format(DATE_ATOM),
     'host' => (string)($_SERVER['HTTP_HOST'] ?? ''),
     'mode' => $payerType,
@@ -250,10 +257,16 @@ $record = [
     'pdnConsent' => $pdnConsent,
     'offerConsent' => $offerConsent,
     'marketingConsent' => $promoConsent,
+    'consentVersion' => $consentVersion,
+    'clientIp' => $clientIp,
+    'userAgent' => $userAgent,
     'ymClientId' => $ymClientId,
     'utm' => $utm,
     'mailSent' => $mailSent,
     'mailMethod' => $mailMethod,
+    'paymentStatus' => 'pending',
+    'paymentProvider' => '',
+    'paymentId' => '',
 ];
 $jsonLine = json_encode($record, JSON_UNESCAPED_UNICODE) . PHP_EOL;
 
@@ -269,8 +282,10 @@ foreach ($candidateDirs as $dir) {
         @mkdir($dir, 0750, true);
     }
     if (is_dir($dir)) {
-        $written = @file_put_contents($dir . '/hr_retreat_leads.jsonl', $jsonLine, FILE_APPEND | LOCK_EX);
+        $targetPath = $dir . '/hr_retreat_leads.jsonl';
+        $written = @file_put_contents($targetPath, $jsonLine, FILE_APPEND | LOCK_EX);
         if ($written !== false && $written > 0) {
+            @chmod($targetPath, 0640);
             $logged = true;
             $logLocation = basename($dir);
             break;
@@ -280,6 +295,7 @@ foreach ($candidateDirs as $dir) {
 
 echo json_encode([
     'ok' => ($mailSent || $logged),
+    'leadId' => $leadId,
     'priceRub' => $activePrice,
     'mailSent' => $mailSent,
     'mailMethod' => $mailMethod,
