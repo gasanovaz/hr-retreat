@@ -306,6 +306,11 @@
   background: #fbf9f4;
   border-color: rgba(236, 208, 155, 0.48);
   box-shadow: 0 22px 44px -20px rgba(7, 25, 22, 0.52);
+  color: var(--ink);
+}
+
+#reviews .rev-name {
+  color: var(--teal-dark);
 }
 
 /* Секция 05 */
