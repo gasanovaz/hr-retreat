@@ -346,6 +346,7 @@
   const form = document.getElementById('retreatForm');
   const feedback = document.getElementById('formFeedback');
   if (form && feedback) {
+    const formLoadedAt = Date.now();
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
@@ -368,6 +369,22 @@
 
       if (!name || !contact) {
         showFeedback('Пожалуйста, укажите имя и телефон или Telegram для связи.');
+        return;
+      }
+
+      const isValidContact =
+        contact.replace(/\D/g, '').length >= 7 ||
+        /^@[a-zA-Z0-9_]{3,32}$/.test(contact) ||
+        /(?:t\.me|telegram\.me)\/[a-zA-Z0-9_]{3,32}/i.test(contact) ||
+        /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(contact);
+
+      if (!isValidContact) {
+        showFeedback('Пожалуйста, укажите корректный номер телефона или Telegram (@username).');
+        return;
+      }
+
+      if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+        showFeedback('Пожалуйста, проверьте формат email или оставьте поле пустым.');
         return;
       }
 
@@ -394,6 +411,7 @@
         company,
         comment,
         website_hp: websiteHp,
+        formElapsedMs: Math.max(0, Date.now() - formLoadedAt),
         pdnConsent: pdnOk,
         offerConsent: offerOk,
         marketingConsent: promoOk,
@@ -437,6 +455,7 @@
       let serverDelivered = false;
       let leadId = '';
       let apiPay = {};
+      let serverRejectError = '';
       const webhookUrl = getWebhookEndpoint();
       if (webhookUrl) {
         if (submitLeadBtn) submitLeadBtn.disabled = true;
@@ -451,14 +470,23 @@
           });
           clearTimeout(timer);
           const data = await resp.json().catch(() => null);
-          serverDelivered = Boolean(resp.ok && data && data.ok === true);
-          if (data && typeof data.leadId === 'string') leadId = data.leadId;
-          if (data && data.payments && typeof data.payments === 'object') apiPay = data.payments;
+          if ((resp.status === 422 || resp.status === 429) && data && typeof data.error === 'string') {
+            serverRejectError = data.error;
+          } else {
+            serverDelivered = Boolean(resp.ok && data && data.ok === true);
+            if (data && typeof data.leadId === 'string') leadId = data.leadId;
+            if (data && data.payments && typeof data.payments === 'object') apiPay = data.payments;
+          }
         } catch (_) {
           serverDelivered = false;
         } finally {
           if (submitLeadBtn) submitLeadBtn.disabled = false;
         }
+      }
+
+      if (serverRejectError) {
+        showFeedback(serverRejectError);
+        return;
       }
 
       const leadTag = leadId ? ` № ${escapeHtml(leadId)}` : '';
