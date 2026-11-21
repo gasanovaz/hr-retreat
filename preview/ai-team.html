@@ -10,7 +10,7 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23144e46'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='system-ui,sans-serif' font-weight='700' font-size='34' fill='%23ecd09b'%3E%D0%92%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="../styles.css?v=12">
   <link rel="stylesheet" href="../deep-theme.css?v=5">
-  <link rel="stylesheet" href="preview.css?v=2">
+  <link rel="stylesheet" href="preview.css?v=3">
 </head>
 <body data-nav="ai">
   <div class="pv-banner">
@@ -72,6 +72,20 @@
           <p class="hero-lead">
             Управленческая архитектура для руководителей и HR-директоров: как делегировать ИИ-агентам рутину и аналитику, оставив за людьми смысл, доверие, переговоры и ответственность за результат.
           </p>
+          <div class="hero-meta-line">
+            <div class="hero-meta-cell">
+              <span class="hero-meta-k">Формат</span>
+              <b>Открытый и B2B-трек</b>
+            </div>
+            <div class="hero-meta-cell">
+              <span class="hero-meta-k">Для кого</span>
+              <b>HRD, руководители, СД</b>
+            </div>
+            <div class="hero-meta-cell">
+              <span class="hero-meta-k">Оформление</span>
+              <b>ИП · УСН без НДС</b>
+            </div>
+          </div>
           <div class="hero-cta-row">
             <a class="btn btn-teal" href="#matrix">Смотреть матрицу делегирования ↓</a>
             <a class="btn btn-outline" href="#b2bApply">Запросить формат для компании</a>
@@ -140,29 +154,42 @@
 
     <!-- Два трека: открытый и B2B -->
     <section class="sec" id="b2b">
-      <div class="wrap pv-2col">
-        <div>
-          <div class="sec-num">02 / Форматы реализации</div>
-          <h2>Открытый поток и корпоративный B2B-трек</h2>
-          <p class="sec-sub" style="margin-bottom:18px;">Программа проектируется в двух вариантах — для индивидуального прохождения руководителями и в виде кастомизированного модуля для компаний.</p>
+      <div class="wrap pv-2col is-equal">
+        <div class="pv-side-stack">
+          <div class="pv-side-head">
+            <div class="sec-num">02 / Форматы реализации</div>
+            <h2>Открытый поток и корпоративный B2B-трек</h2>
+            <p class="sec-sub">Программа проектируется в двух вариантах — для индивидуального прохождения руководителями и в виде кастомизированного модуля для компаний.</p>
+          </div>
 
-          <div class="pv-card" style="margin-bottom:16px;">
+          <div class="pv-card">
             <h3>1. Открытый поток для руководителей и HR</h3>
             <p>Практический разбор управленческих сценариев с ИИ-агентами, матрицей ролей и рабочими тетрадями. Детали набора, длительность и стоимость утверждаются к запуску программы.</p>
           </div>
-          <div class="pv-card">
+          <div class="pv-card pv-stack-bottom">
             <h3>2. Корпоративный B2B-трек и сессии под команду</h3>
             <p>Адаптация под отрасль компании, работа с HR-департаментом и топ-командой, договор и закрывающие документы через ИП Витчак Е. Л. (УСН без НДС).</p>
           </div>
         </div>
 
-        <div class="pv-portrait-card">
-          <div class="pv-portrait-frame is-wide">
-            <img src="assets/elena-hall.webp" alt="Елена Витчак в зале корпоративной программы" width="1100" height="733" decoding="async">
+        <div class="pv-side-stack">
+          <div class="pv-portrait-card">
+            <div class="pv-portrait-frame is-wide">
+              <img src="assets/elena-hall.webp" alt="Елена Витчак в зале корпоративной программы" width="1100" height="733" decoding="async">
+            </div>
+            <div class="pv-portrait-cap">
+              <strong>Корпоративные сессии B2B</strong>
+              <span>Адаптация под команду, договор и акты по УСН</span>
+            </div>
           </div>
-          <div class="pv-portrait-cap">
-            <strong>Корпоративные сессии B2B</strong>
-            <span>Адаптация под команду, договор и акты по УСН</span>
+
+          <div class="pv-card pv-stack-bottom">
+            <h3>Ключевые артефакты для команды</h3>
+            <ul>
+              <li>Карта делегирования ролей между сотрудниками и ИИ-агентами</li>
+              <li>Регламент проверки качества ИИ-черновиков и управленческих решений</li>
+              <li>Дорожная карта внедрения инструментов на 30–60–90 дней</li>
+            </ul>
           </div>
         </div>
       </div>
@@ -170,13 +197,57 @@
 
     <!-- B2B заявка -->
     <section class="sec" id="b2bApply">
-      <div class="wrap pv-2col">
-        <div>
-          <div class="sec-num">03 / Запрос программы</div>
-          <h2>Обсудить участие или корпоративный формат</h2>
-          <p class="sec-sub" style="margin-bottom:18px;">Укажите контакт и задачу вашей команды — мы согласуем формат, расписание и подготовим предложение.</p>
-          <div class="pv-alert-note">
-            <strong>Пометка предпросмотра:</strong> после согласования финального расписания и условий с Еленой на этой странице появятся точная программа модулей и стоимость участия.
+      <div class="wrap pv-2col is-form-split">
+        <div class="pv-side-stack">
+          <div class="pv-side-head">
+            <div class="sec-num">03 / Запрос программы</div>
+            <h2>Обсудить участие или корпоративный формат</h2>
+            <p class="sec-sub">Укажите контакт и задачу вашей команды — согласуем формат, расписание и подготовим предложение.</p>
+          </div>
+
+          <div class="pv-card">
+            <h3>Как проходит запуск корпоративного трека</h3>
+            <ol class="pv-steps-list">
+              <li>
+                <span class="pv-step-num" aria-hidden="true">01</span>
+                <div class="pv-step-body">
+                  <strong>Короткий созвон-диагностика (20 минут)</strong>
+                  <span>Фиксируем состав участников, текущие процессы HR или бизнеса и целевой результат.</span>
+                </div>
+              </li>
+              <li>
+                <span class="pv-step-num" aria-hidden="true">02</span>
+                <div class="pv-step-body">
+                  <strong>Адаптация модулей под отрасль и роли команды</strong>
+                  <span>Подбираем кейсы, матрицу делегирования и глубину практикума без воды и лишней теории.</span>
+                </div>
+              </li>
+              <li>
+                <span class="pv-step-num" aria-hidden="true">03</span>
+                <div class="pv-step-body">
+                  <strong>Договор, счёт по УСН без НДС, проведение и закрывающий акт</strong>
+                  <span>Работаем напрямую с ИП Витчак Е. Л. с полным комплектом документов для компании.</span>
+                </div>
+              </li>
+            </ol>
+          </div>
+
+          <div class="pv-card">
+            <h3>Кому особенно полезен формат</h3>
+            <ul>
+              <li>HR-департаментам и HRD для перестройки рекрутинга, аналитики и внутренних коммуникаций</li>
+              <li>Руководителям операционных блоков для ускорения подготовки отчётов и регламентов</li>
+              <li>Топ-командам и членам советов директоров при выстраивании правил работы с ИИ</li>
+            </ul>
+          </div>
+
+          <div class="pv-direct-strip pv-stack-bottom">
+            <span><strong>Предпросмотр:</strong> финальное расписание и стоимость добавляются после утверждения Еленой.</span>
+            <span>
+              <a href="tel:+79256697377">+7 925 669-73-77</a> ·
+              <a href="https://t.me/alvitcha" target="_blank" rel="noopener noreferrer">@alvitcha</a> ·
+              <a href="mailto:hr.retrit@yandex.ru">hr.retrit@yandex.ru</a>
+            </span>
           </div>
         </div>
 
@@ -214,7 +285,7 @@
             </div>
             <div class="field">
               <label for="aiComment">Задача компании или ваш запрос</label>
-              <textarea id="aiComment" name="comment" rows="3" placeholder="Открытый курс, корпоративная сессия или коучинг"></textarea>
+              <textarea id="aiComment" name="comment" rows="2" placeholder="Открытый курс, корпоративная сессия или коучинг"></textarea>
             </div>
             <div class="hp-field">
               <label for="aiHp">Не заполняйте</label>

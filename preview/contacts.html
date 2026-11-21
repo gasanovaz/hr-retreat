@@ -10,7 +10,7 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23144e46'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='system-ui,sans-serif' font-weight='700' font-size='34' fill='%23ecd09b'%3E%D0%92%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="../styles.css?v=12">
   <link rel="stylesheet" href="../deep-theme.css?v=5">
-  <link rel="stylesheet" href="preview.css?v=2">
+  <link rel="stylesheet" href="preview.css?v=3">
 </head>
 <body data-nav="contacts">
   <div class="pv-banner">
@@ -59,22 +59,35 @@
 
   <main id="top">
     <section class="pv-subhero">
-      <div class="wrap">
-        <div class="eyebrow">
-          <span class="eyebrow-dot" aria-hidden="true"></span>
-          Связь, корпоративные счета B2B и правовые документы
+      <div class="wrap pv-subhero-grid">
+        <div>
+          <div class="eyebrow">
+            <span class="eyebrow-dot" aria-hidden="true"></span>
+            Связь, корпоративные счета B2B и правовые документы
+          </div>
+          <h1>Контакты и реквизиты Школы</h1>
+          <p class="hero-lead">
+            Ответим на вопросы по участию в открытых потоках, индивидуальному коучингу или подготовим счёт и договор для вашей компании (УСН без НДС).
+          </p>
         </div>
-        <h1>Контакты и реквизиты Школы</h1>
-        <p class="hero-lead">
-          Ответим на вопросы по участию в открытых потоках, коучингу или подготовим счёт и договор для вашей компании (УСН без НДС).
-        </p>
+
+        <aside class="pv-hero-quick" aria-label="Быстрые переходы">
+          <span class="pv-pill" style="background:rgba(236,208,155,0.18);color:#ecd09b;align-self:flex-start;">Быстрый переход</span>
+          <h2>Действующая запись на 4-й поток HR-ретрита открыта</h2>
+          <p>Старт программы 14 января 2027 года. Ранняя цена 50 000 ₽ действует до 23 декабря (далее 59 000 ₽). Прямые вопросы — в Telegram @alvitcha или по телефону.</p>
+          <div class="pv-hero-quick-links">
+            <a class="btn btn-sm" style="background:#ecd09b;border-color:#ecd09b;color:#102a25;" href="../#apply">Открыть запись HR-ретрита →</a>
+            <a class="btn btn-outline btn-sm" href="https://t.me/alvitcha" target="_blank" rel="noopener noreferrer">Telegram @alvitcha</a>
+            <a class="btn btn-outline btn-sm" href="tel:+79256697377">+7 925 669-73-77</a>
+          </div>
+        </aside>
       </div>
     </section>
 
     <section class="sec">
-      <div class="wrap pv-2col">
-        <div>
-          <div class="pv-card" style="margin-bottom:18px;">
+      <div class="wrap pv-2col is-form-split">
+        <div class="pv-side-stack">
+          <div class="pv-card">
             <h2>Прямые контакты для участников и компаний</h2>
             <p>
               <strong>Телефон / WhatsApp*:</strong> <a href="tel:+79256697377" style="text-decoration:underline;">+7 925 669-73-77</a><br>
@@ -87,8 +100,35 @@
           </div>
 
           <div class="pv-card">
+            <h2>Как выставляем счёт для компаний (B2B)</h2>
+            <ol class="pv-steps-list">
+              <li>
+                <span class="pv-step-num" aria-hidden="true">01</span>
+                <div class="pv-step-body">
+                  <strong>Отправьте карточку компании или ИНН на <span style="white-space:nowrap;">hr.retrit@yandex.ru</span></strong>
+                  <span>Можно указать реквизиты сразу в форме справа — они подставляются в заявку.</span>
+                </div>
+              </li>
+              <li>
+                <span class="pv-step-num" aria-hidden="true">02</span>
+                <div class="pv-step-body">
+                  <strong>Выставляем счёт на ИП Витчак Е. Л. (УСН без НДС)</strong>
+                  <span>Работаем по публичной оферте или по вашему договору с согласованием графика.</span>
+                </div>
+              </li>
+              <li>
+                <span class="pv-step-num" aria-hidden="true">03</span>
+                <div class="pv-step-body">
+                  <strong>Формируем закрывающий Акт об оказании услуг</strong>
+                  <span>Отправляем документ после завершения программы для вашей бухгалтерии.</span>
+                </div>
+              </li>
+            </ol>
+          </div>
+
+          <div class="pv-card pv-stack-bottom">
             <h2>Реквизиты ИП и документы РФ (152-ФЗ, 38-ФЗ, ЗоЗПП)</h2>
-            <p style="margin-bottom:12px;">
+            <p style="margin-bottom:10px;">
               <strong>Индивидуальный предприниматель Витчак Елена Леонидовна</strong><br>
               ОГРНИП: 325774600726740 от 23.10.2025<br>
               ИНН: 616503753678 · Налоговый режим: УСН (НДС не облагается)
@@ -146,7 +186,7 @@
             </div>
             <div class="field">
               <label for="ctComment">Сообщение</label>
-              <textarea id="ctComment" name="comment" rows="3" placeholder="Опишите ваш вопрос или задачу"></textarea>
+              <textarea id="ctComment" name="comment" rows="2" placeholder="Опишите ваш вопрос или задачу"></textarea>
             </div>
             <div class="hp-field">
               <label for="ctHp">Не заполняйте</label>
