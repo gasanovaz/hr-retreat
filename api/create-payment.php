@@ -100,8 +100,9 @@ if ($provider === 'yookassa') {
                 'currency' => 'RUB',
             ],
             'vat_code' => 1, // Без НДС (УСН)
-            'payment_mode' => 'full_payment',
+            'payment_mode' => 'full_prepayment', // Предоплата 100% (54-ФЗ)
             'payment_subject' => 'service',
+            'measure' => 'piece', // Тег 2108 ФФД 1.2 («Чеки от ЮKassa»)
         ]],
     ];
     if ((int)($yk['taxSystemCode'] ?? 0) > 0) {
@@ -141,6 +142,15 @@ if ($provider === 'yookassa') {
     $confirmationUrl = (string)($resp['json']['confirmation']['confirmation_url'] ?? '');
     $ykPaymentId = (string)($resp['json']['id'] ?? '');
     if ($resp['status'] < 200 || $resp['status'] >= 300 || $confirmationUrl === '' || $ykPaymentId === '') {
+        ev_append_jsonl('hr_retreat_payments.jsonl', [
+            'ts' => $mskNow->format(DATE_ATOM),
+            'leadId' => $leadId,
+            'provider' => 'yookassa',
+            'status' => 'error',
+            'httpStatus' => (int)$resp['status'],
+            'errorCode' => (string)($resp['json']['code'] ?? ''),
+            'errorDesc' => (string)($resp['json']['description'] ?? $resp['error'] ?? ''),
+        ]);
         http_response_code(502);
         echo json_encode([
             'ok' => false,

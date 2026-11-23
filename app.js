@@ -264,8 +264,8 @@
         labelPrefix = 'Запросить счёт на компанию ';
       } else {
         labelPrefix = earlyActive
-          ? 'Отправить заявку и получить ссылку '
-          : 'Получить ссылку на оплату ';
+          ? 'Отправить заявку и перейти к оплате '
+          : 'Перейти к онлайн-оплате ';
       }
       const priceSpan = document.createElement('span');
       priceSpan.style.whiteSpace = 'nowrap';
@@ -298,8 +298,8 @@
       const activePriceLabel = formatRub(getActivePriceRub());
       if (leadComment && !leadComment.value.trim()) {
         leadComment.value = isEarlyBirdActive()
-          ? `Прошу оформить участие по ранней цене ${activePriceLabel} (до ${ANALYTICS_CONFIG.earlyDeadlineLabel}, полная стоимость 59 000 ₽) и направить ссылку на оплату от ИП.`
-          : `Прошу направить прямую ссылку на оплату участия от ИП (${activePriceLabel}).`;
+          ? `Оформляю участие по ранней цене ${activePriceLabel} (до ${ANALYTICS_CONFIG.earlyDeadlineLabel}, далее 59 000 ₽) — онлайн-оплата через ЮKassa.`
+          : `Оформляю участие (${activePriceLabel}) — онлайн-оплата через ЮKassa.`;
       }
       setTimeout(() => {
         if (leadName) leadName.focus();

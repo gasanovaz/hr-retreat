@@ -598,15 +598,15 @@
                 </div>
                 <div class="tariff-row">
                   <span>Документы и оплата</span>
-                  <b>Ссылка на счёт ИП или счёт на ООО</b>
+                  <b>Онлайн-оплата ЮKassa или счёт на ООО</b>
                 </div>
               </div>
 
               <div class="pricing-tax-notes">
                 <div>
                   <strong>Для физлиц (B2C):</strong>
-                  <span data-early-bird-only>ранняя цена 50 000 ₽ действует до 23 декабря (далее 59 000 ₽) — бухгалтер направит прямую ссылку на оплату от ИП Витчак Е. Л.</span>
-                  <span data-standard-only>прямая ссылка на оплату счёта ИП Витчак Е. Л. либо онлайн-оплата картой через ЮKassa.</span>
+                  <span data-early-bird-only>ранняя цена 50 000 ₽ действует до 23 декабря (далее 59 000 ₽) — мгновенная онлайн-оплата через ЮKassa (карта, SberPay, T-Pay, Alfa Pay) с чеком 54-ФЗ.</span>
+                  <span data-standard-only>мгновенная онлайн-оплата через ЮKassa (карта, SberPay, T-Pay, Alfa Pay) с автоматическим чеком 54-ФЗ.</span>
                 </div>
                 <div>
                   <strong>Для компаний (B2B):</strong> работаем по УСН без НДС; выставляем счёт, договор и закрывающие документы (ЭДО или скан/оригинал) для бухгалтерии.
@@ -628,7 +628,7 @@
                 </div>
                 <div class="ip-pay-note">
                   <span>Оплата через ИП Витчак Е. Л. (УСН без НДС) · чек и документы</span>
-                  <span>Ссылку ЮKassa на оплату (карта / СБП) направит бухгалтер после заявки</span>
+                  <span>Мгновенная онлайн-оплата через ЮKassa сразу после заявки · чек 54-ФЗ на e-mail</span>
                 </div>
               </div>
 
@@ -645,14 +645,14 @@
           <div class="form-card" id="apply">
             <h3>Заявка на участие или выставление счёта</h3>
             <p class="form-desc">
-              Укажите контакт — пришлём прямую ссылку на оплату от ИП<span data-early-bird-only> по ранней цене 50 000 ₽ (до 23 декабря, далее — 59 000 ₽)</span> либо выставим счёт на организацию.
+              Укажите контакт — сразу откроется кнопка онлайн-оплаты ЮKassa<span data-early-bird-only> по ранней цене 50 000 ₽ (до 23 декабря, далее — 59 000 ₽)</span> либо выставим счёт на организацию.
             </p>
 
             <form id="retreatForm" action="/api/hr-retreat-lead.php" method="POST" novalidate>
               <div class="payer-switch" role="radiogroup" aria-label="Формат оплаты">
                 <label class="payer-pill is-active" id="payerPillB2c">
                   <input type="radio" name="payer_type" value="b2c" checked>
-                  <span>Оплачиваю лично (ИП / СБП)</span>
+                  <span>Оплачиваю лично (онлайн · ЮKassa)</span>
                 </label>
                 <label class="payer-pill" id="payerPillB2b">
                   <input type="radio" name="payer_type" value="b2b">
@@ -724,7 +724,7 @@
                 </label>
               </div>
 
-              <button class="btn btn-teal" id="submitLeadBtn" type="submit" style="width: 100%;">Отправить заявку и получить ссылку <span style="white-space:nowrap;">(50 000 ₽)</span></button>
+              <button class="btn btn-teal" id="submitLeadBtn" type="submit" style="width: 100%;">Отправить заявку и перейти к оплате <span style="white-space:nowrap;">(50 000 ₽)</span></button>
 
               <div class="form-feedback" id="formFeedback" role="status" aria-live="polite"></div>
             </form>
@@ -786,7 +786,7 @@
 
           <details class="faq-item">
             <summary>Как оплатить как физлицо или от компании с документами? <span class="faq-plus">+</span></summary>
-            <div class="faq-ans">Оставьте заявку в форме или напишите на <a href="mailto:hr.retrit@yandex.ru" style="text-decoration:underline;">hr.retrit@yandex.ru</a>. Для физлиц бухгалтер направит прямую ссылку на оплату от ИП Витчак Е. Л., для юридических лиц — выставим счёт (УСН без НДС), договор и закрывающие документы.</div>
+            <div class="faq-ans">Оставьте заявку в форме или напишите на <a href="mailto:hr.retrit@yandex.ru" style="text-decoration:underline;">hr.retrit@yandex.ru</a>. Для физлиц сразу после заявки открывается кнопка онлайн-оплаты через ЮKassa (карта, SberPay, T-Pay, Alfa Pay, чек 54-ФЗ приходит на почту), для юридических лиц — выставим счёт (УСН без НДС), договор и закрывающие документы.</div>
           </details>
 
           <details class="faq-item">
@@ -854,6 +854,6 @@
     </div>
   </div>
 
-  <script src="app.js?v=15"></script>
+  <script src="app.js?v=16"></script>
 </body>
 </html>
