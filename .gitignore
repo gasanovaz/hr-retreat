@@ -1,5 +1,6 @@
 api/.smtp_secret.php
 api/.payment_secret.php
 api/.admin_secret.php
+api/.waitlist_secret.php
 api/.leads_storage/
 .DS_Store

@@ -2,6 +2,7 @@ User-agent: *
 Allow: /
 Disallow: /api/
 Disallow: /admin/
+Disallow: /waitlist-table/
 
 Host: https://evitchak.ru
 Sitemap: https://evitchak.ru/sitemap.xml

@@ -1,0 +1,347 @@
+/* Страница «Лист ожидания» (evitchak.ru/waitlist/) — фирменный стиль Изумруд × Шампань */
+
+.wl-main {
+  padding: 40px 0 68px;
+  background: linear-gradient(180deg, #faf7f0 0%, #f3eee3 100%);
+  min-height: calc(100vh - 180px);
+}
+
+.wl-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+  gap: 28px;
+  align-items: stretch;
+}
+
+.wl-info,
+.wl-form-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.wl-benefits-card {
+  background: #ffffff;
+  border: 1px solid #dfd7c7;
+  border-radius: 16px;
+  padding: 20px 22px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.wl-form-card {
+  width: 100%;
+  flex: 1;
+}
+
+.wl-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(20, 78, 70, 0.08);
+  border: 1px solid rgba(20, 78, 70, 0.18);
+  color: #144e46;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.wl-info h1 {
+  font-size: clamp(2rem, 3.6vw, 2.85rem);
+  line-height: 1.08;
+  color: #0e342e;
+  margin: 0 0 14px;
+  letter-spacing: -0.02em;
+}
+
+.wl-accent {
+  color: #144e46;
+  font-style: italic;
+}
+
+.wl-lead {
+  font-size: 1.02rem;
+  line-height: 1.56;
+  color: #364542;
+  margin: 0 0 22px;
+}
+
+.wl-expert-card {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #dfd7c7;
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin-bottom: 18px;
+  box-shadow: 0 10px 26px -22px rgba(14, 56, 50, 0.3);
+}
+
+.wl-expert-photo {
+  width: 78px;
+  height: 98px;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 12px;
+  flex-shrink: 0;
+  border: 1px solid rgba(213, 178, 112, 0.55);
+}
+
+.wl-expert-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #8a6421;
+  margin-bottom: 4px;
+}
+
+.wl-expert-body h2 {
+  font-size: 1.15rem;
+  color: #0e342e;
+  margin: 0 0 4px;
+}
+
+.wl-expert-body p {
+  font-size: 0.85rem;
+  line-height: 1.44;
+  color: #4b5a57;
+  margin: 0;
+}
+
+.wl-benefits-card h3 {
+  font-size: 1.06rem;
+  color: #0e342e;
+  margin: 0 0 12px;
+}
+
+.wl-benefits-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.wl-benefits-list li {
+  position: relative;
+  padding-left: 18px;
+}
+
+.wl-benefits-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 7px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #b58429;
+}
+
+.wl-benefits-list strong {
+  display: block;
+  font-size: 0.92rem;
+  color: #0e342e;
+  margin-bottom: 2px;
+}
+
+.wl-benefits-list span {
+  display: block;
+  font-size: 0.84rem;
+  line-height: 1.44;
+  color: #4f5d5a;
+}
+
+.wl-dates-strip {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid #e7dfd0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.wl-dates-strip span {
+  display: block;
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #6b7774;
+  margin-bottom: 2px;
+}
+
+.wl-dates-strip b {
+  font-size: 0.88rem;
+  color: #144e46;
+}
+
+/* Тёмно-изумрудная форма листа ожидания */
+.wl-form-card {
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(160deg, #144e46 0%, #0e3832 100%);
+  border: 1px solid rgba(236, 208, 155, 0.45);
+  color: #f5f2eb;
+  box-shadow: 0 22px 48px -28px rgba(10, 40, 35, 0.55);
+}
+
+#waitlistForm {
+  margin-bottom: 16px;
+}
+
+.wl-form-card h3 {
+  color: #ffffff;
+}
+
+.wl-form-card .form-desc {
+  color: #d3e2de;
+}
+
+.wl-fields-2col {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.wl-form-card .field label {
+  color: #eef4f2;
+}
+
+.wl-form-card .field input,
+.wl-form-card .field textarea {
+  background: #ffffff;
+  border-color: rgba(236, 208, 155, 0.48);
+  color: #141918;
+}
+
+.wl-form-card .field input:focus,
+.wl-form-card .field textarea:focus {
+  border-color: #ecd09b;
+  box-shadow: 0 0 0 3px rgba(236, 208, 155, 0.25);
+}
+
+.wl-form-card .consent-row {
+  color: #d5e3df;
+  font-size: 0.78rem;
+}
+
+.wl-form-card .consent-row input[type="checkbox"] {
+  accent-color: #ecd09b;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.wl-form-card .consent-row a {
+  color: #ecd09b;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.wl-submit-btn {
+  width: 100%;
+  background: #ecd09b;
+  border: 1px solid #ecd09b;
+  color: #102a25;
+  font-weight: 700;
+  font-size: 0.96rem;
+  padding: 13px 18px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.16s ease, transform 0.12s ease;
+}
+
+.wl-submit-btn:hover:not(:disabled) {
+  background: #f4e2bc;
+  border-color: #f4e2bc;
+}
+
+.wl-submit-btn:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.wl-form-card .form-feedback {
+  margin-top: 12px;
+  background: rgba(10, 34, 30, 0.78);
+  border: 1px solid rgba(236, 208, 155, 0.45);
+  color: #f4f1ea;
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 0.88rem;
+  line-height: 1.48;
+  display: none;
+}
+
+.wl-form-card .form-feedback.is-visible {
+  display: block;
+}
+
+.wl-form-card .form-feedback.is-error {
+  background: rgba(112, 24, 18, 0.88);
+  border-color: rgba(255, 189, 180, 0.6);
+  color: #fff3f2;
+}
+
+.wl-form-card .form-feedback a {
+  color: #ecd09b;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.wl-form-card .channel-links {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid rgba(236, 208, 155, 0.22);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 12px;
+  font-size: 0.82rem;
+}
+
+.wl-form-card .channel-links a {
+  color: #ecd09b;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(236, 208, 155, 0.42);
+}
+
+.wl-form-card .channel-links a:hover {
+  border-bottom-color: #ecd09b;
+}
+
+@media (max-width: 960px) {
+  .wl-grid {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+}
+
+@media (max-width: 640px) {
+  .wl-main {
+    padding: 24px 0 44px;
+  }
+  .wl-expert-card {
+    align-items: flex-start;
+  }
+  .wl-expert-photo {
+    width: 68px;
+    height: 86px;
+  }
+  .wl-fields-2col,
+  .wl-dates-strip {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .wl-form-card {
+    padding: 22px 18px;
+  }
+}
