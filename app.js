@@ -15,7 +15,7 @@
     robokassaUrl: '', // Опциональная прямая ссылка Робокассы
     streamLabel: 'HR-ретрит · 4-й запуск (14 января – 4 февраля)',
     earlyPriceRub: 50000,
-    standardPriceRub: 59000,
+    standardPriceRub: 75000,
     earlyDeadlineLabel: '23 декабря',
     consentStorageKey: 'vitchak_cookie_consent_v1',
   };
@@ -298,7 +298,7 @@
       const activePriceLabel = formatRub(getActivePriceRub());
       if (leadComment && !leadComment.value.trim()) {
         leadComment.value = isEarlyBirdActive()
-          ? `Оформляю участие по ранней цене ${activePriceLabel} (до ${ANALYTICS_CONFIG.earlyDeadlineLabel}, далее 59 000 ₽) — онлайн-оплата через ЮKassa.`
+          ? `Оформляю участие по ранней цене ${activePriceLabel} (до ${ANALYTICS_CONFIG.earlyDeadlineLabel}, далее 75 000 ₽) — онлайн-оплата через ЮKassa.`
           : `Оформляю участие (${activePriceLabel}) — онлайн-оплата через ЮKassa.`;
       }
       setTimeout(() => {

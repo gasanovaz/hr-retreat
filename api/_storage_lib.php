@@ -24,7 +24,7 @@ function ev_active_price_rub(?DateTimeImmutable $now = null): int
 {
     $now = $now ?? ev_msk_now();
     $earlyDeadline = new DateTimeImmutable('2026-12-23 23:59:59', new DateTimeZone('Europe/Moscow'));
-    return ($now <= $earlyDeadline) ? 50000 : 59000;
+    return ($now <= $earlyDeadline) ? 50000 : 75000;
 }
 
 function ev_candidate_dirs(): array

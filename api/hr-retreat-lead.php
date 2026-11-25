@@ -213,7 +213,7 @@ if (!ev_check_and_record_rate_limit($clientIp, time())) {
 $mskNow = ev_msk_now();
 $activePrice = ev_active_price_rub($mskNow);
 $leadId = 'HR-' . $mskNow->format('Ymd') . '-' . strtoupper(bin2hex(random_bytes(3)));
-$consentVersion = '2026-11-17';
+$consentVersion = '2026-11-25';
 
 $utm = is_array($data['utm'] ?? null) ? $data['utm'] : [];
 $utmText = json_encode($utm, JSON_UNESCAPED_UNICODE);
